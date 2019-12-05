@@ -146,7 +146,7 @@ const verbs = []
 function loadVerbs() {
     for(var i = 0; i < data.length; i++) {
         var item = data[i]
-        verbs[i] = new Verb(item[0], item[1], item[2], item[3], item[4])
+        verbs[i] = new Verb(item[0], item[1], item[2], item[3], item[4], item[5])
     }
 }
 
