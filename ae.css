@@ -1,35 +1,50 @@
-        .toolbar-item{
-            display: inline;
-        }
-        #stage {
-			background: white;
-            width: 480px;
-            height: 320px;
-            position: relative;
-            border: 2px solid black;
-        }
+#stage {
+    background: white;
+    width: 480px;
+    height: 320px;
+    position: relative;
+    border: 2px solid black;
+}
 
-        canvas { position: absolute; }
-        #ui-layer { z-index: 2; }
-        #background-layer { z-index: 1; }
+#ui-layer {
+    z-index: 2;
+}
 
-		button {
-			width:50%;
-			height:50px;
-			margin-left: 0px;
-			margin-right: 0px; float: left;
-		}
-		
-		.footer {
-			display: block;
-			position: fixed;
-			bottom: 20px;
-			width: 100%;
-		}
-		
-		button.full_button {
-			display: block;
-			width: 96%;
-			height: 80px;
-			font-size: 22px;
-		}
+#background-layer {
+    z-index: 1;
+}
+
+canvas {
+    position: absolute;
+}
+
+input[type=checkbox] {
+    width:30px;
+    height:30px;
+}
+
+button {
+    width:50%;
+    height:50px;
+    margin-left: 0px;
+    margin-right: 0px; float: left;
+}
+
+button.full_button {
+    display: block;
+    width: 96%;
+    height: 80px;
+    font-size: 22px;
+}
+
+.toolbar-item{
+    display: inline;
+}
+
+.footer {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+}
+
