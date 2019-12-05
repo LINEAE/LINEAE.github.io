@@ -24,5 +24,9 @@ var data = [
     ["know", "knew", "known", "knowing", "알다", "knows"],
     ["throw", "threw", "thrown", "throwing", "던지다", "throws"],
     ["withdraw", "withdrew", "withdrawn", "withdrawing", "(돈을)인출하다 철회하다", "withdraws"],
+    ["swear", "swore", "sworn", "swearing", "맹세하다", "swears"],
+    ["tear", "tore", "torn", "tearing", "찢다", "tears"],
+    ["wear", "wore", "worn", "wearing", "입다", "wears"],
+    ["show", "showed", "shown", "showing", "보여주다", "shows"],
 ]
 //["", "", "", "", "", ""],
