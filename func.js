@@ -196,7 +196,7 @@ function getResult(subject, verb, tense) {
 
         }else{
           if(tense.progressive == true) {
-            if(subject.person == PersonEnum.first && subject.plural == PersonEnum.singular) {
+            if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
               verbPrefix += "am ";
             } else if(subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
               verbPrefix += "is ";
@@ -227,7 +227,7 @@ function getResult(subject, verb, tense) {
 
         }else {
           if(tense.progressive == true) {
-            if(subject.person == PersonEnum.first && subject.plural == PersonEnum.singular) {
+            if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
               verbPrefix += "was ";
             } else if(subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
               verbPrefix += "was ";
