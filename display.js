@@ -27,7 +27,7 @@ function initCanvasSize(canvas) {
 }
 
 function drawBackground(){
-    var canvas = document.getElementById('background-layer');
+    var canvas = document.getElementById('tense-bg-layer');
 
     initCanvasSize(canvas);
 
@@ -53,7 +53,7 @@ function drawBackground(){
 }
 
 function drawTense(tense, progressive, perfect) {
-    var canvas = document.getElementById('ui-layer');
+    var canvas = document.getElementById('tense-fg-layer');
     if (!canvas.getContext){
         return;
     }
