@@ -16,6 +16,13 @@
     width: 66%;
 }
 
+#article-text-description {
+    font-size: 20px;
+    margin-top:10px;
+    width: 100%;
+    height: 120px;
+}
+
 .article-image-tense-overlay {
     display:block;
     position:absolute;

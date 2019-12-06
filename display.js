@@ -1,6 +1,3 @@
-var subject = null
-var verb = null
-var tense = null
 
 
 var canvasWidth = 480;

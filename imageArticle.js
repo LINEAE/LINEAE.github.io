@@ -1,11 +1,27 @@
-function next() {
-    var tense = pickTense()
-    var image = pickImage()
+var tense = null
+var article = null
 
-    drawTense(tense.tense, tense.progressive, tense.perfect)
-    drawImage(image)
+var nextCount = 0
+function next() {
+    if( nextCount++ %2 == 0 ) {
+        quiz()
+    } else {
+        answer()
+    }
 }
 
+function quiz() {
+    tense = pickTense()
+    article = pickArticle()
+
+    drawTense(tense.tense, tense.progressive, tense.perfect);
+    drawArticle(article.index);
+    writeArticle("");
+}
+
+function answer() {
+    writeArticle(article.description);
+}
 
 function onLoadBody() {
     drawBackground();
@@ -17,11 +33,18 @@ function pickTense() {
     return tenses[index];
 }
 
-function pickImage() {
-    return getRandomInt(1, 33);
+function pickArticle() {
+    var index = getRandomInt(0, articles.length);
+    return articles[index];
 }
 
-function drawImage(image) {
+function drawArticle(index) {
     var img = document.getElementById("article-image");
-    img.src = "res/imageArticle/" + image + ".jpg";
+    img.src = "res/imageArticle/" + index + ".jpg";
+}
+
+function writeArticle(description) {
+    var textView = document.getElementById("article-text-description");
+    textView.value = description;
+
 }

@@ -1,3 +1,8 @@
+
+var subject = null
+var verb = null
+var tense = null
+
 function quiz() {
     subject = pickSubject();
     verb = pickVerb()
