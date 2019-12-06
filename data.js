@@ -1,5 +1,5 @@
 // 원형, 과거, 과거완료, 현재진행, 한국어, 단수형(동규야 부탁한다)
-var data = [
+var irregularVerbsData = [
 ["drive", "drove", "driven", "driving", "운전하다", ""],
 ["ride", "rode", "ridden", "riding", "(탈것에)타다", ""],
 ["write", "wrote", "written", "writing", "(글씨를)쓰다", ""],
