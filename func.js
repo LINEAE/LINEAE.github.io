@@ -92,7 +92,6 @@ const subjects = [
     new Subject("You", PersonEnum.second, PluralEnum.singular),
     new Subject("He", PersonEnum.third, PluralEnum.singular),
     new Subject("She", PersonEnum.third, PluralEnum.singular),
-    new Subject("It", PersonEnum.third, PluralEnum.singular),
     new Subject("We", PersonEnum.first, PluralEnum.plural),
     new Subject("You", PersonEnum.second, PluralEnum.plural),
     new Subject("They", PersonEnum.third, PluralEnum.plural)
@@ -203,6 +202,28 @@ function pickVerb() {
     return verbs[index];
 }
 
+function convertToThird(verb) {
+    var lastIndex = verb.length - 1;
+    var lastCh = verb[lastIndex];
+    var newVerb = verb.slice(0, lastIndex);
+    switch(lastCh) {
+        case 'a':
+        case 'i':
+        case 'o':
+        case 'u':
+            newVerb = newVerb + lastCh + "es";  //동사 뒤에는 es
+            break;
+        case 'y':
+            newVerb += "ies";   //y는 i로 고치고 ex
+            break;
+        default:
+            newVerb = newVerb + lastCh + "s";   //나머지는 s
+            break;       
+    }
+    return newVerb;
+
+}
+
 function getResult(subject, verb, tense) {
     var name = subject.name;
 
@@ -236,7 +257,7 @@ function getResult(subject, verb, tense) {
                     displayVerb = verb.progressive;
                 } else {
                     if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
-                        displayVerb = verb.third;
+                        displayVerb = convertToThird(verb.base);
                     } else {
                         displayVerb = verb.base;
                     }

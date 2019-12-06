@@ -48,6 +48,8 @@ function drawQuizText(subject, verb) {
     ctx.fillText(subject.name, 70, 50);
 
     ctx.fillText(verb.base, 270, 50);
+    ctx.font = '20px serif';
+    ctx.fillText(verb.kor, 270, 80 , 200);
 
 }
 
@@ -61,12 +63,8 @@ function drawResultText(subject, verb, tense) {
     ctx.font = '36px serif';
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
-
-
-    ctx.fillText(getResult(subject,verb,tense), 70, 250);
-    ctx.font = '30px serif';
-    ctx.fillText(verb.kor, 150, 290);
-
+    ctx.fillText(getResult(subject,verb,tense), 70, 250 , 340);
+   
 }
 
 
@@ -134,10 +132,14 @@ function drawTense(tense, progressive, perfect) {
             xPos = futurePosX;
             break;
     }
-    drawCircle(ctx,xPos, yPos, circleWidth);
+
+    if(!perfect) {
+        drawCircle(ctx,xPos, yPos, circleWidth);
+    }
 
     //draw progressive
     if(progressive) {
+        drawCircle(ctx,xPos, yPos, circleWidth);
         fillCircle(ctx,xPos, yPos, circleWidth);
     }
 
