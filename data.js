@@ -118,7 +118,7 @@ var imageArticlesData = [
 ["A bullfighter leans and touches the bull with long spears in the back."],
 ["A bullfighter falls to the ground after the bull's attack on the horse."],
 ["A fighting bull goes through the legs of a bullfighter."],
-["Several man run and look back over their shoulders at bulls."],
+["Several men run and look back over their shoulders at bulls."],
 ["A bull hits a man and (it) sends him to the fence."],
 ["A man lies on the ground when bulls pass him."],
 ["A bullfighter is knocked down by a bull."],
