@@ -2,78 +2,39 @@ var subject = null
 var verb = null
 var tense = null
 
-var yPos = 125;
-var circleWidth = 70;
-var lineLength = 70;
+
+var canvasWidth = 480;
+var canvasHeight = 320;
+
+var yPos = 124;
+var circleWidth = 72;
+var lineLength = 72;
 var strokeWidth = 6;
 
-function quiz() {
-    subject = pickSubject();
-    verb = pickVerb()
-    tense = pickTense();
 
-    console.log(subject+
-        "\n" + verb +
-        "\n" + tense +
-        "\n" + getResult(subject,verb,tense))
-        drawTense(tense.tense,tense.progressive, tense.perfect);
-        drawQuizText(subject, verb);
-}
+function initCanvasSize(canvas) {
+    canvasWidth = canvas.width;
+    canvasHeight = canvas.height;
 
-function answer() {
-   drawResultText(subject,verb,tense);
-}
+    circleWidth = Math.floor(canvasWidth * 0.15);
+    lineLength = circleWidth;
 
-var nextCount = 0
-function next() {
-    if( nextCount++ %2 == 0 ) {
-        quiz()
-    } else {
-        answer()
-    }
-}
+    yPos = Math.floor((canvasHeight - circleWidth) * 0.5);
 
-function drawQuizText(subject, verb) {
-   var canvas = document.getElementById('text-layer');
-    if (!canvas.getContext){
-        return;
-    }
-
-    var ctx = canvas.getContext('2d');
-    ctx.font = '36px serif';
-    ctx.strokeStyle = 'black';
-    ctx.fillStyle = 'black';
-    ctx.clearRect(0, 0, 480,320);
-
-    ctx.fillText(subject.name, 70, 50);
-
-    ctx.fillText(verb.base, 270, 50);
-    ctx.font = '20px serif';
-    ctx.fillText(verb.kor, 270, 80 , 200);
+    console.log("initCanvasSize: canvas:(" + canvasWidth +"," + canvasHeight + ") "
+            + "circleWidth:" + circleWidth +" yPos:" + yPos);
 
 }
-
-function drawResultText(subject, verb, tense) {
-   var canvas = document.getElementById('text-layer');
-    if (!canvas.getContext){
-        return;
-    }
-
-    var ctx = canvas.getContext('2d');
-    ctx.font = '36px serif';
-    ctx.strokeStyle = 'black';
-    ctx.fillStyle = 'black';
-    ctx.fillText(getResult(subject,verb,tense), 70, 250 , 340);
-   
-}
-
 
 function drawBackground(){
     var canvas = document.getElementById('background-layer');
+
+    initCanvasSize(canvas);
+
     if (!canvas.getContext){
         return;
     }
-    var presentPosX = (480 - circleWidth) / 2
+    var presentPosX = (canvasWidth - circleWidth) / 2
     var pastPosX = presentPosX - lineLength - circleWidth
     var futurePosX = presentPosX + circleWidth + lineLength
 
@@ -91,24 +52,12 @@ function drawBackground(){
     drawHorizontalLine(ctx, futurePosX + circleWidth, yPos + (circleWidth/2), lineLength)
 }
 
-function drawPast() {
-    drawTense(TenseEnum.past, document.getElementById("progressive").checked, document.getElementById("perfect").checked)
-}
-
-function drawPresent() {
-    drawTense(TenseEnum.present, document.getElementById("progressive").checked, document.getElementById("perfect").checked)
-}
-
-function drawFuture() {
-    drawTense(TenseEnum.future, document.getElementById("progressive").checked, document.getElementById("perfect").checked)
-}
-
 function drawTense(tense, progressive, perfect) {
     var canvas = document.getElementById('ui-layer');
     if (!canvas.getContext){
         return;
     }
-    var presentPosX = (480 - circleWidth) / 2
+    var presentPosX = (canvasWidth - circleWidth) / 2
     var pastPosX = presentPosX - lineLength - circleWidth
     var futurePosX = presentPosX + circleWidth + lineLength
 
@@ -117,7 +66,7 @@ function drawTense(tense, progressive, perfect) {
     ctx.fillStyle = 'blue';
     ctx.lineWidth = strokeWidth;
 
-    ctx.clearRect(0, 0, 480,320);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     //draw tense circle
     var xPos = presentPosX;
@@ -148,32 +97,4 @@ function drawTense(tense, progressive, perfect) {
         drawHorizontalLine(ctx, xPos - lineLength, yPos + (circleWidth/2), lineLength)
         drawVerticalLine(ctx, xPos, yPos, circleWidth)
     }
-}
-
-function drawHorizontalLine(ctx, startX, startY, length) {
-    ctx.beginPath();
-    ctx.moveTo(startX,startY);
-    ctx.lineTo(startX + length, startY);
-    ctx.stroke();
-}
-
-function drawVerticalLine(ctx, startX, startY, length) {
-    ctx.beginPath();
-    ctx.moveTo(startX,startY);
-    ctx.lineTo(startX , startY + length);
-    ctx.stroke();
-}
-
-function drawCircle(ctx, x, y, radiusX2) {
-    var radius = radiusX2 / 2;
-    var circle = new Path2D();
-    circle.arc(x + radius, y + radius, radius, 0,  2 * Math.PI);
-    ctx.stroke(circle);
-}
-
-function fillCircle(ctx, x, y, radiusX2) {
-    var radius = radiusX2 / 2;
-    var circle = new Path2D();
-    circle.arc(x + radius, y + radius, radius, 0,  2 * Math.PI);
-    ctx.fill(circle);
 }
