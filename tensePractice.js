@@ -60,7 +60,9 @@ function drawResultText(subject, verb, tense) {
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
     ctx.fillText(getResult(subject,verb,tense), 70, 250 , 340);
-   
+
+    ctx.fillStyle = 'red';
+    ctx.fillText(verb.base + " - " + verb.past + " - " + verb.perfect, 70, 290 , 340);
 }
 
 
