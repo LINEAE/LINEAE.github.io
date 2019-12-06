@@ -203,9 +203,15 @@ function pickVerb() {
 }
 
 function convertToThird(verb) {
-    var lastIndex = verb.length - 1;
-    var lastCh = verb[lastIndex];
-    var newVerb = verb.slice(0, lastIndex);
+    //불규칙이 있을 경우 처리
+    if(verb.third && verb.third != "") {
+        return verb.third;
+    }
+
+    var base = verb.base
+    var lastIndex = base.length - 1;
+    var lastCh = base[lastIndex];
+    var newVerb = base.slice(0, lastIndex);
     switch(lastCh) {
         case 'a':
         case 'i':
@@ -257,7 +263,7 @@ function getResult(subject, verb, tense) {
                     displayVerb = verb.progressive;
                 } else {
                     if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
-                        displayVerb = convertToThird(verb.base);
+                        displayVerb = convertToThird(verb);
                     } else {
                         displayVerb = verb.base;
                     }
