@@ -1,4 +1,4 @@
-// 원형, 과거, 과거완료, 현재진행, 한국어, 단수형(동규야 부탁한다)
+// 원형, 과거, 과거완료, 현재진행, 한국어, 단수형
 var irregularVerbsData = [
 ["drive", "drove", "driven", "driving", "운전하다", ""],
 ["ride", "rode", "ridden", "riding", "(탈것에)타다", ""],
@@ -48,17 +48,17 @@ var irregularVerbsData = [
 ["feed", "fed", "fed", "feeding", "먹이다", ""],
 ["lead", "led", "led", "leading", "이끌다", ""],
 ["meet", "met", "met", "meeting", "만나다", ""],
-["read", "tead", "read", "reading", "읽다", ""],
+["read", "read", "read", "reading", "읽다", ""],
 ["shoot", "shot", "shot", "shooting", "쏘다,발사하다", ""],
 ["sleep", "slept", "slept", "sleeping", "자다", ""],
 ["speed", "sped", "sped", "speeding", "속도를내다", ""],
 ["hear", "heard", "heard", "hearing", "듣다", ""],
 ["dig", "dug", "dug", "digging", "파다", ""],
 ["hang", "hung", "hung", "hanging", "매달다", ""],
-["stick", "stuck", "stuck", "sticking", "찌르다.붙이다", ""],
+["stick", "stuck", "stuck", "sticking", "찌르다,붙이다", ""],
 ["strike", "struck", "struck", "striking", "치다,때리다", ""],
 ["awake", "awoke", "awoken", "awaking", "(잠에서)깨우다", ""],
-["get", "got", "gotten/go~", "getting", "얻다,되다", ""],
+["get", "got", "gotten/got", "getting", "얻다,되다", ""],
 ["shine", "shone", "shone", "shining", "빛나다", ""],
 ["win", "won", "won", "wining", "이기다,얻다", ""],
 ["bend", "bent", "bent", "bending", "구부리다", ""],
@@ -79,12 +79,12 @@ var irregularVerbsData = [
 ["find", "found", "found", "finding", "찾다.발견하다", ""],
 ["pay", "paid", "paid", "paying", "지불하다", ""],
 ["say", "said", "said", "saying", "말하다", ""],
-["stand", "stood", "Stood", "standing", "씨다", ""],
+["stand", "stood", "stood", "standing", "씨다", ""],
 ["understand", "understood", "understood", "understanding", "이해하다", ""],
 ["feel", "felt", "felt", "feeling", "느끼다", ""],
 ["hold", "held", "held", "holding", "잡다,쥐다", ""],
 ["keep", "kept", "kept", "keeping", "유지하다", ""],
-["leave", "left", "leift", "leaving", "떠나다", ""],
+["leave", "left", "left", "leaving", "떠나다", ""],
 ["sell", "sold", "sold", "selling", "팔다", ""],
 ["tell", "told", "told", "telling", "말하다", ""],
 ["have", "had", "had", "having", "갖다,가지다", "has"],
@@ -103,7 +103,6 @@ var irregularVerbsData = [
 ["spread", "spread", "spread", "spreading", "퍼다,떨치다", ""],
 ["bear", "bore", "born(e)", "bearing", "출산하다", ""],
 ]
-//["", "", "", "", "", ""],
 
 var imageArticlesData = [
 ["A father and his child go down a water slide."],
