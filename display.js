@@ -7,7 +7,8 @@ var yPos = 124;
 var circleWidth = 72;
 var lineLength = 72;
 var strokeWidth = 6;
-
+var colorTenseBg = '#EEEEEE'
+var colorTenseQuestion = '#FAF565'
 
 function initCanvasSize(canvas) {
     canvasWidth = canvas.width;
@@ -36,7 +37,7 @@ function drawBackground(){
     var futurePosX = presentPosX + circleWidth + lineLength
 
     var ctx = canvas.getContext('2d');
-    ctx.strokeStyle = 'skyBlue';
+    ctx.strokeStyle = colorTenseBg;
     ctx.lineWidth = strokeWidth;
 
     drawCircle(ctx,pastPosX, yPos, circleWidth);
@@ -59,8 +60,8 @@ function drawTense(tense, progressive, perfect) {
     var futurePosX = presentPosX + circleWidth + lineLength
 
     var ctx = canvas.getContext('2d');
-    ctx.strokeStyle = 'blue';
-    ctx.fillStyle = 'blue';
+    ctx.strokeStyle = colorTenseQuestion;
+    ctx.fillStyle = colorTenseQuestion;
     ctx.lineWidth = strokeWidth;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
