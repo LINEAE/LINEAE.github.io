@@ -2,6 +2,10 @@ var tense = null
 var article = null
 
 var nextCount = 0
+var strokeWidth = 3;
+var colorTenseBg = 'skyBlue'
+var colorTenseQuestion = 'red'
+
 function next() {
     if( nextCount++ %2 == 0 ) {
         quiz()
