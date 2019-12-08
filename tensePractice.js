@@ -37,8 +37,8 @@ function drawQuizText(subject, verb) {
 
     var ctx = canvas.getContext('2d');
     ctx.font = '36px serif';
-    ctx.strokeStyle = 'black';
-    ctx.fillStyle = 'black';
+    ctx.strokeStyle = 'white';
+    ctx.fillStyle = 'white';
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     ctx.fillText(subject.name, 70, 50);
@@ -57,11 +57,11 @@ function drawResultText(subject, verb, tense) {
 
     var ctx = canvas.getContext('2d');
     ctx.font = '36px serif';
-    ctx.strokeStyle = 'black';
-    ctx.fillStyle = 'black';
+    ctx.strokeStyle = 'white';
+    ctx.fillStyle = 'white';
     ctx.fillText(getResult(subject,verb,tense), 70, 250 , 340);
 
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = '#36A1D5';
     ctx.fillText(verb.base + " - " + verb.past + " - " + verb.perfect, 70, 290 , 340);
 }
 
