@@ -1,0 +1,53 @@
+#stage {
+    font-size:6px;
+    text-align:center;
+}
+
+#question {
+    margin-top:4px;
+    margin-bottom:12px;
+    font-size:20px;
+}
+
+#answer {
+    margin-top:4px;
+    margin-bottom:12px;
+    font-size:20px;
+}
+
+#options {
+    margin-bottom:20px;
+}
+
+.guide {
+    margin-top:8px;
+    margin-bottom:8px;
+}
+
+input[type=checkbox] {
+    width:30px;
+    height:30px;
+}
+
+button {
+    width:50%;
+    height:50px;
+    margin-left: 0px;
+    margin-right: 0px;
+    float: left;
+}
+
+button.full_button {
+    display: block;
+    width: 96%;
+    height: 80px;
+    font-size: 22px;
+}
+
+.footer {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+}
+

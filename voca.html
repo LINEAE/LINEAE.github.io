@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=500, user-scalable=no">
+    <title>단어장</title>
+    <link rel="apple-touch-icon" href="icon-72x72.jpg">
+    <script src="data_voca.js"></script>
+    <script src="voca.js"></script>
+    <link rel="stylesheet" type="text/css" href="voca.css">
+</head>
+
+<body onload="onLoadBody();">
+
+    <div id="stage">
+        <div>
+            <div class="guide">Question</div>
+            <div id="question">_</div>
+        </div>
+
+        <div>
+            <div class="guide">Answer</div>
+            <div id="answer">_</div>
+        </div>
+    </div>
+
+
+    <div class="footer">
+        <div id="options">
+            <input id="cbKrToEn" type="checkbox" onclick="onclickCheckbox();">한→영
+        </div>
+        <div class="toolbar-item">
+            <button class="full_button" name="next" onclick="next();">next</button>
+        </div>
+    </div>
+
+</body>
+</html>
