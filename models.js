@@ -110,7 +110,74 @@ class Tense {
             "\nprogressive:" + this.progressive +
             "\nperfect:" + this.perfect;
     }
+    
+    getDisplayTense(subject, positive) {
+        var verbPrefix = "";
+        switch (this.tense) {
+            case TenseEnum.present: {
+                if (this.perfect == true) {
+                    if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                        verbPrefix += "has ";
+                    } else {
+                        verbPrefix += "have ";
+                    }
 
+                    if (this.progressive == true) {
+                        verbPrefix += "been ";  
+                    } 
+
+                } else {
+                    if (this.progressive == true) {
+                        if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                            verbPrefix += "am ";
+                        } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            verbPrefix += "is ";
+                        } else {
+                            verbPrefix += "are ";
+                        }
+                    } 
+                }
+                break;
+            }
+            case TenseEnum.past: {
+                if (this.perfect == true) {
+                    verbPrefix += "had ";
+                    if (this.progressive == true) {
+                        verbPrefix += "been ";
+                    }
+
+                } else {
+                    if (this.progressive == true) {
+                        if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                            verbPrefix += "was ";
+                        } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            verbPrefix += "was ";
+                        } else {
+                            verbPrefix += "were ";
+                        } 
+                    } 
+                }
+                break;
+            }
+
+            case TenseEnum.future: {
+                verbPrefix += "will ";
+                if (this.perfect == true) {
+                    verbPrefix += "have ";
+                    if (this.progressive == true) {
+                        verbPrefix += "been ";
+                    }
+
+                } else {
+                    if (this.progressive == true) {
+                        verbPrefix += "be ";
+                    }
+                }
+                break;
+            }
+        }
+        return verbPrefix;
+    }
 }
 
 const tenses = [
@@ -130,6 +197,35 @@ const tenses = [
     new Tense(TenseEnum.future, true, true),
 ];
 
+
+function convertToThird(verb) {
+    //불규칙이 있을 경우 처리
+    if(verb.third && verb.third != "") {
+        return verb.third;
+    }
+
+    var base = verb.base
+    var lastIndex = base.length - 1;
+    var lastCh = base[lastIndex];
+    var newVerb = base.slice(0, lastIndex);
+    switch(lastCh) {
+        case 'a':
+        case 'i':
+        case 'o':
+        case 'u':
+            newVerb = newVerb + lastCh + "es";  //동사 뒤에는 es
+            break;
+        case 'y':
+            newVerb += "ies";   //y는 i로 고치고 ex
+            break;
+        default:
+            newVerb = newVerb + lastCh + "s";   //나머지는 s
+            break;       
+    }
+    return newVerb;
+
+}
+
 class Verb {
     constructor(base, past, perfect, progressive, kor, third) {
         this.base = base;
@@ -147,6 +243,68 @@ class Verb {
             "\nprogressive:" + this.progressive +
             "\nkor:" + this.kor +
             "\nthird:" + this.third;
+    }
+
+    getDisplayVerb(subject, tense) {
+        var displayVerb = "";
+        switch (tense.tense) {
+            case TenseEnum.present: {
+                if (tense.perfect == true) {
+                    if (tense.progressive == true) {                    
+                        displayVerb = this.progressive;
+                    } else {
+                        displayVerb = this.perfect;
+                    }
+
+                } else {
+                    if (tense.progressive == true) {
+                        displayVerb = this.progressive;
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            displayVerb = convertToThird(this);
+                        } else {
+                            displayVerb = this.base;
+                        }
+                    }
+                }
+                break;
+            }
+            case TenseEnum.past: {
+                if (tense.perfect == true) {                
+                    if (tense.progressive == true) {
+                        displayVerb = this.progressive;
+                    } else {
+                        displayVerb = this.perfect;
+                    }
+
+                } else {
+                    if (tense.progressive == true) {                    
+                        displayVerb = this.progressive;
+                    } else {
+                        displayVerb = this.past;
+                    }
+                }
+                break;
+            }
+
+            case TenseEnum.future: {           
+                if (tense.perfect == true) {                
+                    if (tense.progressive == true) {                    
+                        displayVerb = this.progressive;
+                    } else {
+                        displayVerb = this.perfect;
+                    }
+                } else {
+                    if (tense.progressive == true) {                    
+                        displayVerb = this.progressive;
+                    } else {
+                        displayVerb = this.base;
+                    }
+                }
+                break;
+            }
+        }
+        return displayVerb;
     }
 }
 
