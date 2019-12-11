@@ -97,11 +97,11 @@ function pickVerb() {
 function getResult(subject, verb, tense) {
     var name = subject.name;
 
-    var verbPrefix = tense.getDisplayTense(subject, true);
+    var displayTense = tense.getDisplayTense(subject, true);
     var displayVerb = verb.getDisplayVerb(subject, tense);
     
 
-    return name + " " + verbPrefix + displayVerb
+    return name + displayTense + displayVerb
 }
 
 function onLoadBody() {

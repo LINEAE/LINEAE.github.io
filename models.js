@@ -112,14 +112,26 @@ class Tense {
     }
     
     getDisplayTense(subject, positive) {
-        var verbPrefix = "";
+        var verbPrefix = " ";
         switch (this.tense) {
             case TenseEnum.present: {
                 if (this.perfect == true) {
                     if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
-                        verbPrefix += "has ";
+                        if(positive) {
+                            if (this.progressive == true) {
+                                verbPrefix = "'s ";
+                            } else {
+                                verbPrefix = " has ";
+                            }
+                        } else {
+                            verbPrefix = " hasn't ";
+                        }
                     } else {
-                        verbPrefix += "have ";
+                        if(positive) {
+                            verbPrefix = "'ve ";
+                        } else {
+                            verbPrefix = " haven't ";
+                        }
                     }
 
                     if (this.progressive == true) {
@@ -128,12 +140,22 @@ class Tense {
 
                 } else {
                     if (this.progressive == true) {
-                        if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
-                            verbPrefix += "am ";
-                        } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
-                            verbPrefix += "is ";
+                        if(positive) {
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = "'m ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = "'s' ";
+                            } else {
+                                verbPrefix = "'re ";
+                            }
                         } else {
-                            verbPrefix += "are ";
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = "'m not ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " isn't ";
+                            } else {
+                                verbPrefix = " aren't ";
+                            }
                         }
                     } 
                 }
@@ -141,27 +163,45 @@ class Tense {
             }
             case TenseEnum.past: {
                 if (this.perfect == true) {
-                    verbPrefix += "had ";
+                    if(positive) {
+                        verbPrefix = "'d ";
+                    } else{
+                        verbPrefix = " hadn't ";
+                    }
                     if (this.progressive == true) {
                         verbPrefix += "been ";
                     }
 
                 } else {
                     if (this.progressive == true) {
-                        if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
-                            verbPrefix += "was ";
-                        } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
-                            verbPrefix += "was ";
-                        } else {
-                            verbPrefix += "were ";
-                        } 
+                        if(positive) {
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " was ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " was ";
+                            } else {
+                                verbPrefix = " were ";
+                            } 
+                        } else{
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " wasn't ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " wasn't ";
+                            } else {
+                                verbPrefix = " weren't ";
+                            }
+                        }
                     } 
                 }
                 break;
             }
 
             case TenseEnum.future: {
-                verbPrefix += "will ";
+                if(positive) {
+                    verbPrefix = "'ll ";
+                }else{
+                    verbPrefix = " won't ";
+                }
                 if (this.perfect == true) {
                     verbPrefix += "have ";
                     if (this.progressive == true) {
