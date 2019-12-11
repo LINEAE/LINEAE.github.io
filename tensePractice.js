@@ -2,22 +2,24 @@
 var subject = null
 var verb = null
 var tense = null
-
+var positive = true
 function quiz() {
     subject = pickSubject();
     verb = pickVerb()
     tense = pickTense();
+    positive = pickPositive();
 
     console.log(subject+
         "\n" + verb +
         "\n" + tense +
-        "\n" + getResult(subject,verb,tense))
+        "\n" + positive +
+        "\n" + getResult(subject,verb,tense,positive))
     drawTense(tense.tense,tense.progressive, tense.perfect);
-    drawQuizText(subject, verb);
+    drawQuiz(subject, verb, positive);
 }
 
 function answer() {
-   drawResultText(subject,verb,tense);
+   drawResultText(subject,verb,tense, positive);
 }
 
 var nextCount = 0
@@ -29,7 +31,7 @@ function next() {
     }
 }
 
-function drawQuizText(subject, verb) {
+function drawQuiz(subject, verb, positive) {
    var canvas = document.getElementById('text-layer');
     if (!canvas.getContext){
         return;
@@ -47,9 +49,15 @@ function drawQuizText(subject, verb) {
     ctx.font = '20px serif';
     ctx.fillText(verb.kor, 270, 80 , 200);
 
+    if(positive == false) {
+        ctx.strokeStyle = 'red'
+        ctx.lineWidth = strokeWidth;
+        drawX(ctx, 170, 20,50);
+    }
+
 }
 
-function drawResultText(subject, verb, tense) {
+function drawResultText(subject, verb, tense, positive) {
    var canvas = document.getElementById('text-layer');
     if (!canvas.getContext){
         return;
@@ -59,7 +67,7 @@ function drawResultText(subject, verb, tense) {
     ctx.font = '36px serif';
     ctx.strokeStyle = 'white';
     ctx.fillStyle = 'white';
-    ctx.fillText(getResult(subject,verb,tense), 70, 250 , 340);
+    ctx.fillText(getResult(subject,verb,tense, positive), 70, 250 , 340);
 
     ctx.fillStyle = '#36A1D5';
     ctx.fillText(verb.base + " - " + verb.past + " - " + verb.perfect, 70, 290 , 340);
@@ -93,11 +101,20 @@ function pickVerb() {
     return verbs[index];
 }
 
+function pickPositive() {
+    var number = getRandomInt(0, 10)
+    if( number % 2 == 0 ) {
+        return true
+    } else {
+        return false
+    }
 
-function getResult(subject, verb, tense) {
+}
+
+function getResult(subject, verb, tense, positive) {
     var name = subject.name;
 
-    var displayTense = tense.getDisplayTense(subject, true);
+    var displayTense = tense.getDisplayTense(subject, positive);
     var displayVerb = verb.getDisplayVerb(subject, tense);
     
 

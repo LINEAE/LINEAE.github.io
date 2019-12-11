@@ -35,6 +35,15 @@ function drawCircle(ctx, x, y, radiusX2) {
     ctx.stroke(circle);
 }
 
+function drawX(ctx, x, y, size) {
+    var path = new Path2D();
+    path.moveTo(x,y)
+    path.lineTo(x + size, y + size)
+    path.moveTo(x + size, y)
+    path.lineTo(x, y + size)
+    ctx.stroke(path);
+}
+
 function fillCircle(ctx, x, y, radiusX2) {
     var radius = radiusX2 / 2;
     var circle = new Path2D();
