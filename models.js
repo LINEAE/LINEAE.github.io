@@ -157,6 +157,16 @@ class Tense {
                                 verbPrefix = " aren't ";
                             }
                         }
+                    } else {
+                        if(positive) {
+
+                        } else {
+                            if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " doesn't ";
+                            } else {
+                                verbPrefix = " don't ";
+                            }
+                        }
                     } 
                 }
                 break;
@@ -190,6 +200,12 @@ class Tense {
                             } else {
                                 verbPrefix = " weren't ";
                             }
+                        }
+                    } else {
+                        if(positive) {
+
+                        } else {
+                            verbPrefix = " didn't ";
                         }
                     } 
                 }
@@ -285,7 +301,7 @@ class Verb {
             "\nthird:" + this.third;
     }
 
-    getDisplayVerb(subject, tense) {
+    getDisplayVerb(subject, tense, positive) {
         var displayVerb = "";
         switch (tense.tense) {
             case TenseEnum.present: {
@@ -300,7 +316,7 @@ class Verb {
                     if (tense.progressive == true) {
                         displayVerb = this.progressive;
                     } else {
-                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                        if (positive && subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
                             displayVerb = convertToThird(this);
                         } else {
                             displayVerb = this.base;
@@ -321,7 +337,11 @@ class Verb {
                     if (tense.progressive == true) {                    
                         displayVerb = this.progressive;
                     } else {
-                        displayVerb = this.past;
+                        if (positive) {
+                            displayVerb = this.past;
+                        } else {
+                            displayVerb = this.base;
+                        }
                     }
                 }
                 break;

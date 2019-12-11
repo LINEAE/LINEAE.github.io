@@ -115,7 +115,7 @@ function getResult(subject, verb, tense, positive) {
     var name = subject.name;
 
     var displayTense = tense.getDisplayTense(subject, positive);
-    var displayVerb = verb.getDisplayVerb(subject, tense);
+    var displayVerb = verb.getDisplayVerb(subject, tense, positive);
     
 
     return name + displayTense + displayVerb
