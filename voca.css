@@ -6,13 +6,15 @@
 #question {
     margin-top:4px;
     margin-bottom:12px;
-    font-size:20px;
+    font-size:30px;
+    font-weight:bold;
 }
 
 #answer {
     margin-top:4px;
     margin-bottom:12px;
-    font-size:20px;
+    font-size:30px;
+    font-weight:bold;
 }
 
 #options {
@@ -22,6 +24,8 @@
 .guide {
     margin-top:8px;
     margin-bottom:8px;
+    font-size:20px;
+    color:#666666;
 }
 
 input[type=checkbox] {

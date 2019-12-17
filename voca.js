@@ -17,8 +17,10 @@ var voca = null
 
 var elQuestion
 var elAnswer
+var elStatus
 
 var currentIndex = null
+var randomIndex = null
 
 var nextCount = 0
 function next() {
@@ -28,18 +30,34 @@ function next() {
 function clear() {
     elQuestion.innerText=""
     elAnswer.innerText=""
+    elStatus.innerText=""
 }
 
 function getNextVoca() {
+    if( isNaN(currentIndex) ) {
+        currentIndex = 0;
+    }
     currentIndex = (currentIndex + 1) % vocas.length
 	saveVocaStatus()
     return vocas[currentIndex];
 }
 
-function quiz() {
-    voca = getNextVoca()
+function getRandomVoca() {
+    randomIndex = Math.ceil(Math.random() * vocas.length)
+    return vocas[randomIndex];
+}
 
+function quiz() {
     clear()
+
+    if(cbRandom.checked) {
+        voca = getRandomVoca()
+        elStatus.innerText = "Random: " + randomIndex + "/" + vocas.length
+    } else {
+        voca = getNextVoca()
+        elStatus.innerText = "Sequential: " + currentIndex + "/" + vocas.length
+    }
+
     if( cbKrToEn.checked ) {
         elQuestion.innerText = voca.kor
     } else {
@@ -62,6 +80,7 @@ function onLoadBody() {
 
     elQuestion = document.getElementById("question");
     elAnswer = document.getElementById("answer");
+    elStatus = document.getElementById("status");
 }
 
 function loadVocaStatus() {
@@ -84,8 +103,14 @@ function loadCheckboxStatus() {
     } else {
         cbKrToEn.checked = window.localStorage.getItem("cbKrToEn") == "true";
     }
+    if( null == window.localStorage.getItem("cbRandom") ) {
+        cbRandom.checked = false;
+    } else {
+        cbRandom.checked = window.localStorage.getItem("cbRandom") == "true";
+    }
 }
 
 function saveCheckboxStatus() {
+    window.localStorage.setItem("cbKrToEn", cbKrToEn.checked);
     window.localStorage.setItem("cbKrToEn", cbKrToEn.checked);
 }

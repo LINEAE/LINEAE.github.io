@@ -1,5 +1,5 @@
-// 영어, 한국어
-var vocaDatas = [
+// 영어, 한국어 1~500
+var vocaData0500 = [
 ["ball", "둥근것, 공"],
 ["balloon", "풍선, 기구"],
 ["bell", "종, 벨"],
