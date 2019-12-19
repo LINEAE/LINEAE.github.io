@@ -1,15 +1,32 @@
 class Voca {
-    constructor(eng, kor) {
+    constructor(eng, kor, pronounce, url) {
         this.eng = eng;
         this.kor = kor;
+        this.pronounce = pronounce;
+        this.url = url;
+    }
+
+    engHtml() {
+        var result = this.eng
+
+        if( this.pronounce ) {
+            result += "<br>" + this.pronounce
+        }
+
+        if( this.url ) {
+            result += "<br> <audio controls src='" + this.url + "'>가능?</audio>"
+        }
+
+        return result
     }
 }
+
 
 const vocas = [];
 (function () {
     for (var i = 0; i < vocaDatas.length; i++) {
         var item = vocaDatas[i];
-        vocas[i] = new Voca(item[0], item[1]);
+        vocas[i] = new Voca(item[0], item[1], item[2], item[3]);
     }
 })()
 
@@ -61,13 +78,13 @@ function quiz() {
     if( cbKrToEn.checked ) {
         elQuestion.innerText = voca.kor
     } else {
-        elQuestion.innerText = voca.eng
+        elQuestion.innerHTML = voca.engHtml()
     }
 }
 
 function answer() {
     if( cbKrToEn.checked ) {
-        elAnswer.innerText = voca.eng
+        elAnswer.innerHTML = voca.engHtml()
     } else {
         elAnswer.innerText = voca.kor
     }
