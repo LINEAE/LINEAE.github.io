@@ -14,7 +14,7 @@ class Voca {
         }
 
         if( this.url ) {
-            result += "<br> <audio controls src='" + this.url + "'>가능?</audio>"
+            result += "<br> <audio controls autoplay src='" + this.url + "'>가능?</audio>"
         }
 
         return result
