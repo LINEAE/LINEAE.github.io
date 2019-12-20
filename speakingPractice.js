@@ -100,7 +100,11 @@ function pickSubject() {
 }
 
 function pickUseBe() {
-    return Math.floor(Math.random() * 2) == 0
+    if(cbTeacher.checked == cbMovie.checked) {
+        return Math.floor(Math.random() * 2) == 0
+    } else {
+        return cbTeacher.checked;
+    }    
 }
 
 function pickTense() {
@@ -168,6 +172,9 @@ function onLoadBody() {
 }
 
 window.onload = function() {
+    cbTeacher = document.getElementById("cbTeacher");
+    cbMovie = document.getElementById("cbMovie");
+
     cbPast = document.getElementById("cbPast");
     cbPresent = document.getElementById("cbPresent");
     cbFuture = document.getElementById("cbFuture");
@@ -186,6 +193,18 @@ function onclickCheckbox(event) {
 }
 
 function loadCheckboxStatus() {
+    if( null == window.localStorage.getItem("cbTeacher") ) {
+        cbTeacher.checked = true;
+    } else {
+        cbTeacher.checked = window.localStorage.getItem("cbTeacher") == "true";
+    }
+
+    if( null == window.localStorage.getItem("cbMovie") ) {
+        cbMovie.checked = true;
+    } else {
+        cbMovie.checked = window.localStorage.getItem("cbMovie") == "true";
+    }
+
     if( null == window.localStorage.getItem("cbPast") ) {
         cbPast.checked = true;
     } else {
@@ -242,6 +261,8 @@ function loadCheckboxStatus() {
 }
 
 function saveCheckboxStatus() {
+    window.localStorage.setItem("cbTeacher", cbTeacher.checked);
+    window.localStorage.setItem("cbMovie", cbMovie.checked);
     window.localStorage.setItem("cbPast", cbPast.checked);
     window.localStorage.setItem("cbPresent", cbPresent.checked);
     window.localStorage.setItem("cbFuture", cbFuture.checked);
