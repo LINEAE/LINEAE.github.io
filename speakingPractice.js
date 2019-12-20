@@ -159,7 +159,7 @@ function getResult(subject, useBe, tense, positive) {
         obj = movie;
     }
 
-    return name + displayTense + displayVerb + " " + obj;
+    return capitialize(name + displayTense + displayVerb + " " + obj);
 }
 
 function onLoadBody() {

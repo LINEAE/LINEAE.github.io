@@ -50,3 +50,13 @@ function fillCircle(ctx, x, y, radiusX2) {
     circle.arc(x + radius, y + radius, radius, 0,  2 * Math.PI);
     ctx.fill(circle);
 }
+
+function capitialize(msg) {
+    if(msg.length == 0) {
+        return "";
+    }else if(msg.length == 1) {
+        return msg.charAt(0).toUpperCase();
+    } else {
+        return msg.charAt(0).toUpperCase() + msg.slice(1)
+    }
+}

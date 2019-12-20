@@ -89,12 +89,12 @@ class Subject {
 
 const subjects = [
     new Subject("I", PersonEnum.first, PluralEnum.singular),
-    new Subject("You", PersonEnum.second, PluralEnum.singular),
-    new Subject("He", PersonEnum.third, PluralEnum.singular),
-    new Subject("She", PersonEnum.third, PluralEnum.singular),
-    new Subject("We", PersonEnum.first, PluralEnum.plural),
-    new Subject("You", PersonEnum.second, PluralEnum.plural),
-    new Subject("They", PersonEnum.third, PluralEnum.plural)
+    new Subject("you", PersonEnum.second, PluralEnum.singular),
+    new Subject("he", PersonEnum.third, PluralEnum.singular),
+    new Subject("she", PersonEnum.third, PluralEnum.singular),
+    new Subject("we", PersonEnum.first, PluralEnum.plural),
+    new Subject("you", PersonEnum.second, PluralEnum.plural),
+    new Subject("they", PersonEnum.third, PluralEnum.plural)
 ];
 
 

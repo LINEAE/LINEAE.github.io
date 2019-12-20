@@ -132,7 +132,7 @@ function getResult(subject, verb, tense, positive) {
     var displayVerb = verb.getDisplayVerb(subject, tense, positive);
     
 
-    return name + displayTense + displayVerb
+    return capitialize(name + displayTense + displayVerb);
 }
 
 function onLoadBody() {
