@@ -44,6 +44,19 @@ function drawX(ctx, x, y, size) {
     ctx.stroke(path);
 }
 
+function drawAsk(ctx, x, y, size) {
+    var arrowSize = size / 10
+    var path = new Path2D();
+    path.moveTo(x + size, y)
+    path.lineTo(x, y + size)   
+    path.lineTo(x+ size, y + size)
+    path.moveTo(x + size - arrowSize , y + size - arrowSize)
+    path.lineTo(x+ size, y + size)
+    path.lineTo(x+ size  - arrowSize, y + size + arrowSize)
+    ctx.stroke(path);
+}
+
+
 function fillCircle(ctx, x, y, radiusX2) {
     var radius = radiusX2 / 2;
     var circle = new Path2D();

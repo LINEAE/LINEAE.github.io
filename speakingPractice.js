@@ -3,7 +3,7 @@ var subject = null
 var useBe = false
 var tense = null
 var positive = true
-
+var ask = false
 
 var see = new Verb("see", "saw", "seen", "seeing", "보다", "")
 var movie = "the movie";
@@ -26,18 +26,20 @@ function quiz() {
     useBe = pickUseBe()
     tense = pickTense();
     positive = pickPositive();
+    ask = pickAsk();
 
     console.log(subject+
         "\n" + useBe +
         "\n" + tense +
         "\n" + positive +
-        "\n" + getResult(subject,useBe,tense,positive))
+        "\n" + ask +
+        "\n" + getResult(subject,useBe,tense,positive, ask))
     drawTense(tense.tense,tense.progressive, tense.perfect);
-    drawQuiz(subject, useBe, positive);
+    drawQuiz(subject, useBe, positive, ask);
 }
 
 function answer() {
-   drawResultText(subject,useBe,tense, positive);
+   drawResultText(subject,useBe,tense, positive, ask);
 }
 
 var nextCount = 0
@@ -49,7 +51,7 @@ function next() {
     }
 }
 
-function drawQuiz(subject, useBe, positive) {
+function drawQuiz(subject, useBe, positive, ask) {
    var canvas = document.getElementById('text-layer');
     if (!canvas.getContext){
         return;
@@ -61,24 +63,41 @@ function drawQuiz(subject, useBe, positive) {
     ctx.fillStyle = 'white';
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    ctx.fillText(subject.name, 70, 50);
+    
 
     if(useBe) {
-        ctx.fillText(getTeacher(subject.plural), 270, 50, 130);
+        ctx.fillText(getTeacher(subject.plural), 230, 50, 180);
     }else {
-        ctx.fillText(see.base + " " + movie, 270, 50, 130);
+        ctx.fillText(see.base + " " + movie, 230, 50, 180);
     }
     
-    
-    if(positive == false) {
-        ctx.strokeStyle = 'red'
+    var nameX = 70;
+    if(ask) {       
+        ctx.strokeStyle = 'orange'
         ctx.lineWidth = strokeWidth;
-        drawX(ctx, 170, 20,50);
+        drawAsk(ctx, 70,25,30);
+        nameX += 40;
+        
+        if(positive == false) {
+            ctx.strokeStyle = 'red'
+            ctx.lineWidth = strokeWidth;
+            drawX(ctx, nameX,25,30);
+
+            nameX += 40;
+        }
+    } else {        
+        if(positive == false) {
+            ctx.strokeStyle = 'red'
+            ctx.lineWidth = strokeWidth;
+            drawX(ctx, 170,25,30);
+        }
     }
+
+    ctx.fillText(subject.name, nameX, 50);
 
 }
 
-function drawResultText(subject, useBe, tense, positive) {
+function drawResultText(subject, useBe, tense, positive, ask) {
    var canvas = document.getElementById('text-layer');
     if (!canvas.getContext){
         return;
@@ -88,7 +107,7 @@ function drawResultText(subject, useBe, tense, positive) {
     ctx.font = '36px serif';
     ctx.strokeStyle = 'white';
     ctx.fillStyle = 'white';
-    ctx.fillText(getResult(subject,useBe ,tense, positive), 70, 250 , 340);
+    ctx.fillText(getResult(subject,useBe ,tense, positive, ask), 70, 250 , 340);
 
     
 }
@@ -148,22 +167,42 @@ function pickPositive() {
     return positive
 }
 
-function getResult(subject, useBe, tense, positive) {
-    var name = subject.name;
-    var displayTense = "";
-    var displayVerb = "";
-    var obj = "";
-    if(useBe) {
-        displayTense = tense.getDisplayBeTense(subject, positive);
-        displayVerb = getDisplayBeVerb(subject, tense, positive);
-        obj = getTeacher(subject.plural);
-    }else {
-        displayTense = tense.getDisplayTense(subject, positive);
-        displayVerb = see.getDisplayVerb(subject, tense, positive);
-        obj = movie;
-    }
+function pickAsk() {
+    if(cbAsk.checked == cbNoAsk.checked) {
+        return Math.floor(Math.random() * 2) == 0
+    } else {
+        return cbAsk.checked;
+    }    
+}
 
-    return capitialize(name + displayTense + displayVerb + " " + obj);
+function getResult(subject, useBe, tense, positive, ask) {
+    if(ask) {
+        var obj = "";
+        if(useBe) {
+            obj = getTeacher(subject.plural);
+            return capitialize(getBeAsk(subject,tense, positive) + " " + obj + "?");
+        } else {
+            obj = movie;
+            return capitialize(getAsk(subject,tense, see, positive) + " " + obj+ "?");
+        }
+
+    } else{
+        var name = subject.name;
+        var displayTense = "";
+        var displayVerb = "";
+        var obj = "";
+        if(useBe) {
+            displayTense = tense.getDisplayBeTense(subject, positive);
+            displayVerb = getDisplayBeVerb(subject, tense, positive);
+            obj = getTeacher(subject.plural);
+        }else {
+            displayTense = tense.getDisplayTense(subject, positive);
+            displayVerb = see.getDisplayVerb(subject, tense, positive);
+            obj = movie;
+        }
+
+        return capitialize(name + displayTense + displayVerb + " " + obj);
+    }
 }
 
 function onLoadBody() {
@@ -186,6 +225,9 @@ window.onload = function() {
 
     cbPositive = document.getElementById("cbPositive");
     cbNegative = document.getElementById("cbNegative");
+
+    cbAsk = document.getElementById("cbAsk");
+    cbNoAsk = document.getElementById("cbNoAsk");
 }
 
 function onclickCheckbox(event) {
@@ -258,6 +300,18 @@ function loadCheckboxStatus() {
     } else {
         cbNegative.checked = window.localStorage.getItem("cbNegative") == "true";
     }
+
+    if( null == window.localStorage.getItem("cbAsk") ) {
+        cbAsk.checked = true;
+    } else {
+        cbAsk.checked = window.localStorage.getItem("cbAsk") == "true";
+    }
+
+    if( null == window.localStorage.getItem("cbNoAsk") ) {
+        cbNoAsk.checked = true;
+    } else {
+        cbNoAsk.checked = window.localStorage.getItem("cbNoAsk") == "true";
+    }
 }
 
 function saveCheckboxStatus() {
@@ -272,4 +326,6 @@ function saveCheckboxStatus() {
     window.localStorage.setItem("cbNotPerfect", cbNotPerfect.checked);
     window.localStorage.setItem("cbPositive", cbPositive.checked);
     window.localStorage.setItem("cbNegative", cbNegative.checked);
+    window.localStorage.setItem("cbAsk", cbAsk.checked);
+    window.localStorage.setItem("cbNoAsk", cbNoAsk.checked);
 }

@@ -566,6 +566,319 @@ function getDisplayBeVerb(subject, tense, positive) {
     return displayVerb;
 }
 
+
+function getBeAsk(subject, tense, positive ) {
+    var ret = "";
+
+    var base = "be";
+    var progressive = "being";
+    var perfect = "been";
+    switch (tense.tense) {
+        case TenseEnum.present: {
+            if(tense.perfect) {
+                if(positive) {
+                    if (positive && subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                        ret = "has " + subject.name + " ";
+                    }else {
+                        ret = "have " + subject.name + " ";
+                    }
+                } else {
+                    if (positive && subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                        ret = "hasn't " + subject.name + " ";
+                    }else {
+                        ret = "haven't " + subject.name + " ";
+                    }
+                }
+
+                if(tense.progressive) {
+                    ret += "been " + progressive;
+                }else {
+                    ret += perfect;
+                }
+
+            } else {
+                if(tense.progressive) {
+                    if(positive) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "is " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "am " + subject.name + " ";
+                        }else {
+                            ret = "are " + subject.name + " ";
+                        }
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "isn't " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "am " + subject.name + " not ";
+                        }else {
+                            ret = "aren't " + subject.name + " ";
+                        }
+                    }
+
+                    ret += progressive;
+
+                } else {
+                    if(positive) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "is " + subject.name;
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "am " + subject.name;
+                        }else {
+                            ret = "are " + subject.name;
+                        }
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "isn't " + subject.name;
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "am " + subject.name +" not";
+                        }else {
+                            ret = "aren't " + subject.name;
+                        }
+                    }
+                }
+            }
+
+            break;
+        }
+        case TenseEnum.past: {
+            if(tense.perfect) {
+                if(positive) {
+                    ret = "had " + subject.name + " ";
+                } else {
+                    ret = "hadn't " + subject.name + " ";
+                }
+
+                if(tense.progressive) {
+                    ret += "been " + progressive;
+                }else {
+                    ret += perfect;
+                }
+
+            } else {
+                if(tense.progressive) {
+                    if(positive) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "was " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "was " + subject.name + " ";
+                        }else {
+                            ret = "were " + subject.name + " ";
+                        }
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "wasn't " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "wasn't " + subject.name + " ";
+                        }else {
+                            ret = "weren't " + subject.name + " ";
+                        }   
+                    }
+
+                    ret += progressive;
+
+                } else {
+                    if(positive) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "was " + subject.name;
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "was " + subject.name;
+                        }else {
+                            ret = "were " + subject.name;
+                        }
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "wasn't " + subject.name;
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "wasn't " + subject.name;
+                        }else {
+                            ret = "weren't " + subject.name;
+                        }   
+                    }
+                }
+            }
+            break;
+        }
+
+        case TenseEnum.future: {           
+            if(positive) {
+                ret = "will " + subject.name + " ";
+            } else {
+                ret = "won't " + subject.name + " ";
+            }
+
+            if(tense.perfect) {
+                ret += "have ";
+                if(tense.progressive) {
+                    ret += "been " + progressive;
+                } else {
+                    ret += perfect;
+                }
+            }else {
+                if(tense.progressive) {
+                    ret += "be " + progressive;
+                } else {
+                    ret += base;
+                }
+            }
+
+            break;
+        }
+    }
+
+    return ret;
+
+}
+
+function getAsk(subject, tense, verb, positive ) {
+    var ret = "";
+
+
+    switch (tense.tense) {
+        case TenseEnum.present: {
+            if(tense.perfect) {
+                if(positive) {
+                    if (positive && subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                        ret = "has " + subject.name + " ";
+                    }else {
+                        ret = "have " + subject.name + " ";
+                    }
+                } else {
+                    if (positive && subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                        ret = "hasn't " + subject.name + " ";
+                    }else {
+                        ret = "haven't " + subject.name + " ";
+                    }
+                }
+
+                if(tense.progressive) {
+                    ret += "been " + verb.progressive;
+                }else {
+                    ret += verb.perfect;
+                }
+
+            } else {
+                if(tense.progressive) {
+                    if(positive) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "is " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "am " + subject.name + " ";
+                        }else {
+                            ret = "are " + subject.name + " ";
+                        }
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "isn't " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "am " + subject.name + " not ";
+                        }else {
+                            ret = "aren't " + subject.name + " ";
+                        }
+                    }
+
+                    ret += verb.progressive;
+
+                } else {
+                    if(positive) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "does " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "do " + subject.name + " ";
+                        }else {
+                            ret = "do " + subject.name + " ";
+                        }
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            ret = "doesn't " + subject.name + " ";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            ret = "don't " + subject.name + " ";
+                        }else {
+                            ret = "don't " + subject.name + " ";
+                        }
+                    }
+
+                    ret += verb.base;
+                }
+            }
+
+            break;
+        }
+        case TenseEnum.past: {
+            if(tense.perfect) {
+                if(positive) {
+                    ret = "had " + subject.name + " ";
+                } else {
+                    ret = "hadn't " + subject.name + " ";
+                }
+
+                if(tense.progressive) {
+                    ret += "been " + verb.progressive;
+                }else {
+                    ret += verb.perfect;
+                }
+
+            } else {
+                if(tense.progressive) {
+                    if(positive) {
+                        if (subject.plural == PluralEnum.singular) {
+                            ret = "was " + subject.name + " ";
+                        }else {
+                            ret = "were " + subject.name + " ";
+                        }
+                    } else {
+                        if (subject.plural == PluralEnum.singular) {
+                            ret = "wasn't " + subject.name + " ";
+                        }else {
+                            ret = "weren't " + subject.name + " ";
+                        }   
+                    }
+
+                    ret += verb.progressive;
+
+                } else {
+                    if(positive) {
+                        ret = "did " + subject.name + " ";
+                    } else {
+                        ret = "didn't " + subject.name + " ";
+                    }
+
+                    ret += verb.base;
+                }
+            }
+            break;
+        }
+
+        case TenseEnum.future: {           
+            if(positive) {
+                ret = "will " + subject.name + " ";
+            } else {
+                ret = "won't " + subject.name + " ";
+            }
+
+            if(tense.perfect) {
+                ret += "have ";
+                if(tense.progressive) {
+                    ret += "been " + verb.progressive;
+                } else {
+                    ret += verb.perfect;
+                }
+            }else {
+                if(tense.progressive) {
+                    ret += "be " + verb.progressive;
+                } else {
+                    ret += verb.base;
+                }
+            }
+
+            break;
+        }
+    }
+
+    return ret;
+
+}
+
 const verbs = [];
 
 (function () {
