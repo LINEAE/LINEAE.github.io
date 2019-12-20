@@ -377,7 +377,7 @@ var adjectivesData = [
 ["능력","capable","능력있는"],
 ["능력","incapable","무능한"],
 ["능력","powerless","할 수 없는"],
-["능력","extraordinary","힘이 없는"],
+["능력","extraordinary","보기 드문, 비범한; 대단한"],
 ["능력","excellent","비범한"],
 ["능력","superior","우수한"],
 ["능력","inferior","열등한"],
