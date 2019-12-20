@@ -110,6 +110,114 @@ class Tense {
             "\nprogressive:" + this.progressive +
             "\nperfect:" + this.perfect;
     }
+
+    getDisplayBeTense(subject, positive) {
+        var verbPrefix = "";
+        switch (this.tense) {
+            case TenseEnum.present: {
+                if (this.perfect == true) {
+                    if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                        if(positive) {
+                            if (this.progressive == true) {
+                                verbPrefix = "'s ";
+                            } else {
+                                verbPrefix = " has ";
+                            }
+                        } else {
+                            verbPrefix = " hasn't ";
+                        }
+                    } else {
+                        if(positive) {
+                            verbPrefix = "'ve ";
+                        } else {
+                            verbPrefix = " haven't ";
+                        }
+                    }
+
+                    if (this.progressive == true) {
+                        verbPrefix += "been ";  
+                    } 
+
+                } else {
+                    if (this.progressive == true) {
+                        if(positive) {
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = "'m ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = "'s' ";
+                            } else {
+                                verbPrefix = "'re ";
+                            }
+                        } else {
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = "'m not ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " isn't ";
+                            } else {
+                                verbPrefix = " aren't ";
+                            }
+                        }
+                    } 
+                }
+                break;
+            }
+            case TenseEnum.past: {
+                if (this.perfect == true) {
+                    if(positive) {
+                        verbPrefix = "'d ";
+                    } else{
+                        verbPrefix = " hadn't ";
+                    }
+                    if (this.progressive == true) {
+                        verbPrefix += "been ";
+                    }
+
+                } else {
+                    if (this.progressive == true) {
+                        if(positive) {
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " was ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " was ";
+                            } else {
+                                verbPrefix = " were ";
+                            } 
+                        } else{
+                            if (subject.person == PersonEnum.first && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " wasn't ";
+                            } else if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                                verbPrefix = " wasn't ";
+                            } else {
+                                verbPrefix = " weren't ";
+                            }
+                        }
+                    } 
+                }
+                break;
+            }
+
+            case TenseEnum.future: {
+                if(positive) {
+                    verbPrefix = "'ll ";
+                }else{
+                    verbPrefix = " won't ";
+                }
+                if (this.perfect == true) {
+                    verbPrefix += "have ";
+                    if (this.progressive == true) {
+                        verbPrefix += "been ";
+                    }
+
+                } else {
+                    if (this.progressive == true) {
+                        verbPrefix += "be ";
+                    }
+                }
+                break;
+            }
+        }
+        return verbPrefix;
+    }
     
     getDisplayTense(subject, positive) {
         var verbPrefix = " ";
@@ -366,6 +474,96 @@ class Verb {
         }
         return displayVerb;
     }
+}
+
+
+function getDisplayBeVerb(subject, tense, positive) {
+    var displayVerb = "";
+    var base = "be";
+    var progressive = "being";
+    var perfect = "been";
+    switch (tense.tense) {
+        case TenseEnum.present: {
+            if (tense.perfect == true) {
+                if (tense.progressive == true) {                    
+                    displayVerb = progressive;
+                } else {
+                    displayVerb = perfect;
+                }
+
+            } else {
+                if (tense.progressive == true) {
+                    displayVerb = progressive;
+                } else {
+                    if(positive) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            displayVerb = "'s";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            displayVerb = "'m";
+                        }else {
+                            displayVerb = "'re";
+                        }
+                    } else {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            displayVerb = " isn't";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
+                            displayVerb = "'m not";
+                        }else {
+                            displayVerb = " aren't";
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        case TenseEnum.past: {
+            if (tense.perfect == true) {                
+                if (tense.progressive == true) {
+                    displayVerb = progressive;
+                } else {
+                    displayVerb = perfect;
+                }
+
+            } else {
+                if (tense.progressive == true) {                    
+                    displayVerb = progressive;
+                } else {
+                    if(positive) {
+                        if (subject.plural == PluralEnum.singular) {
+                            displayVerb = " was";
+                        }else {
+                            displayVerb = " were";
+                        }
+                    } else {
+                        if (subject.plural == PluralEnum.singular) {
+                            displayVerb = " wasn't";
+                        }else {
+                            displayVerb = " weren't";
+                        }
+                    }
+                }
+            }
+            break;
+        }
+
+        case TenseEnum.future: {           
+            if (tense.perfect == true) {                
+                if (tense.progressive == true) {                    
+                    displayVerb = progressive;
+                } else {
+                    displayVerb = perfect;
+                }
+            } else {
+                if (tense.progressive == true) {                    
+                    displayVerb = progressive;
+                } else {
+                    displayVerb = base;
+                }
+            }
+            break;
+        }
+    }
+    return displayVerb;
 }
 
 const verbs = [];

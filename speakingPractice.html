@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=500, user-scalable=no">
+    <title>자동으로 나올때까지</title>
+    <link rel="apple-touch-icon" href="icon-72x72.jpg">
+    <script src="data.js"></script>
+    <script src="models.js"></script>
+    <script src="func.js"></script>
+    <script src="display.js"></script>
+    <script src="speakingPractice.js"></script>   
+    <link rel="stylesheet" type="text/css" href="ae.css">
+</head>
+
+<body onload="onLoadBody();">
+
+<div id="stage">
+    <canvas class="layer-0" id="tense-bg-layer" width="480" height="320"></canvas>
+    <canvas class="layer-1" id="tense-fg-layer" width="480" height="320"></canvas>
+    <canvas class="layer-2" id="text-layer" width="480" height="320"></canvas>
+</div>
+
+<div>
+    <input id="cbPast" type="checkbox" onclick="onclickCheckbox();">Past
+    <input id="cbPresent" type="checkbox" onclick="onclickCheckbox();">Present
+    <input id="cbFuture" type="checkbox" onclick="onclickCheckbox();">Future
+</div>
+<div>
+    <input id="cbProgressive" type="checkbox" onclick="onclickCheckbox();">Progressive
+    <input id="cbNotProgressive" type="checkbox" onclick="onclickCheckbox();">NotProgressive
+</div>
+<div>
+    <input id="cbPerfect" type="checkbox" onclick="onclickCheckbox();">Perfect
+    <input id="cbNotPerfect" type="checkbox" onclick="onclickCheckbox();">NotPerfect
+</div>
+<div>
+    <input id="cbPositive" type="checkbox" onclick="onclickCheckbox();">Positive
+    <input id="cbNegative" type="checkbox" onclick="onclickCheckbox();">Negative
+</div>
+
+<div class="footer">
+    <div class="toolbar-item">
+        <button class="full_button" name="next" onclick="next();">next</button>
+    </div>
+</div>
+
+</body>
+</html>
