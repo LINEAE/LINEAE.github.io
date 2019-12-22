@@ -4,9 +4,9 @@ const fs = require("fs");
 const log = console.log;
 
 // config
-var voca_file_name = "voca_data_2000"
-var from = 000
-var until = from + 250
+var voca_file_name = "voca_data_1500"
+var from = 0
+var until = from + 500
 
 var voca_data = fs.readFileSync(voca_file_name + ".js", "utf8")
 var splits = voca_data.split("\n")
@@ -18,6 +18,11 @@ vocas = vocas.slice(from, until)
 
 function appendPronounce(voca) {
     try {
+        if( null != voca[3] ) {
+            log("SKIP : " + voca[0])
+            return
+        }
+
         var url = "https://dic.daum.net/search.do?q=" + voca[0]
         log("==> " + voca[0] + " : " + url)
 
@@ -42,6 +47,5 @@ for(var i = 0; i < vocas.length; i++) {
     appendPronounce(voca)
 }
 
-log(vocas)
 fs.writeFileSync(voca_file_name + "+" + from + "_" + until + ".js", JSON.stringify(vocas).replace(/\],\[/g, "],\n[").replace("[[", "[").replace("]]", "],"))
 
