@@ -57,9 +57,6 @@ function onLoadBody() {
     elSliderFrom = document.getElementById("slider_voca_from");
     elSliderFromValue = document.getElementById("slider_voca_from_value");
     elSliderFromValue.innerText = elSliderFrom.value
-    elSliderFromValue.onclick = function() {
-        prompt
-    }
 
     elSliderTo = document.getElementById("slider_voca_to");
     elSliderToValue = document.getElementById("slider_voca_to_value");
