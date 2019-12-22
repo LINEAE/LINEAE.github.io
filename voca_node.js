@@ -1,48 +1,26 @@
-const axios = require("axios");
+var req = require("sync-request");
 const cheerio = require("cheerio");
 const fs = require("fs");
 const log = console.log;
 
-var voca_data_0500 = fs.readFileSync("voca_data_0500.js", "utf8")
-var splits = voca_data_0500.split("\n")
+var voca_file_name = "voca_data_1000"
+var voca_data = fs.readFileSync(voca_file_name + ".js", "utf8")
+var splits = voca_data.split("\n")
 var sliced = splits.slice(2, splits.length)
 var joined = sliced.join("\n")
-var voca500 = JSON.parse(joined)
-
-function sleep(t){
-   return new Promise(resolve=>setTimeout(resolve,t));
-}
+var vocas = JSON.parse(joined)
 
 // test
 var from = 400
-var until = from + 50
-voca500 = voca500.slice(from, until)
-pending = {}
-
-for(var i = 0; i < voca500.length; i++) {
-    var voca = voca500[i]
-    appendPronounce(voca)
-}
-
-var watcherId = setInterval(waitWatcher, 1000);
-
-function waitWatcher() {
-    var keys = Object.keys(pending)
-    if( keys.length <= 0 ) {
-        clearInterval(watcherId)
-        log(voca500)
-        fs.writeFileSync("voca_data_0500+"+from+ "_"+ until +".js", JSON.stringify(voca500).replace(/\],\[/g, "],\n[").replace("[[", "[").replace("]]", "],"))
-    }
-}
+var until = from + 100
+vocas = vocas.slice(from, until)
 
 function appendPronounce(voca) {
-    pending[voca[0]] = ""
+    try {
+        var url = "https://dic.daum.net/search.do?q=" + voca[0]
+        log("==> " + voca[0] + " : " + url)
 
-    // axios.get("https://dict.naver.com/search.nhn?dicQuery=" + voca[0])
-    axios.get("https://dic.daum.net/search.do?q=" + voca[0])
-    .then(html => {
-        let ulList = [];
-        const $ = cheerio.load(html.data);
+        const $ = cheerio.load(req("GET", url).getBody("utf8"));
         const pronounce = $("span.txt_pronounce").first().text()
         voca[2] = pronounce
 
@@ -53,7 +31,16 @@ function appendPronounce(voca) {
         voca[3] = voice
 
         log(voca)
-
-        delete pending[voca[0]]
-    })
+    } catch (e) {
+        log(e)
+    }
 }
+
+for(var i = 0; i < vocas.length; i++) {
+    var voca = vocas[i]
+    appendPronounce(voca)
+}
+
+log(vocas)
+fs.writeFileSync(voca_file_name + "+" + from + "_" + until + ".js", JSON.stringify(vocas).replace(/\],\[/g, "],\n[").replace("[[", "[").replace("]]", "],"))
+
