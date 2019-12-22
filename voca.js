@@ -35,9 +35,63 @@ var voca = null
 var elQuestion
 var elAnswer
 var elStatus
+var elSliderFrom
+var elSliderFromValue
+var elSliderTo
+var elSliderToValue
+var elSliderCurrent
+var elSliderCurrentValue
 
 var currentIndex = null
 var randomIndex = null
+
+function onLoadBody() {
+    cbKrToEn = document.getElementById("cbKrToEn");
+    loadCheckboxStatus();
+    loadVocaStatus();
+
+    elQuestion = document.getElementById("question");
+    elAnswer = document.getElementById("answer");
+    elStatus = document.getElementById("status");
+
+    elSliderFrom = document.getElementById("slider_voca_from");
+    elSliderFromValue = document.getElementById("slider_voca_from_value");
+    elSliderFromValue.innerText = elSliderFrom.value
+
+    elSliderTo = document.getElementById("slider_voca_to");
+    elSliderToValue = document.getElementById("slider_voca_to_value");
+    elSliderToValue.innerText = elSliderTo.value
+
+    elSliderCurrent = document.getElementById("slider_voca_current");
+    elSliderCurrentValue = document.getElementById("slider_voca_current_value");
+    elSliderCurrentValue.innerText = elSliderCurrent.value
+
+    elSliderFrom.oninput = function() {
+        elSliderFromValue.innerText = this.value
+        if( new Number(elSliderFrom.value) > new Number(elSliderTo.value) ) {
+            elSliderTo.value = this.value
+            elSliderToValue.innerText = this.value
+        }
+    }
+    elSliderTo.oninput = function() {
+        elSliderToValue.innerText = this.value
+        if( new Number(elSliderTo.value) < new Number(elSliderFrom.value) ) {
+            elSliderFrom.value = this.value
+            elSliderFromValue.innerText = this.value
+        }
+    }
+    elSliderCurrent.oninput = function() {
+        elSliderCurrentValue.innerText = this.value
+    }
+
+    elSliderFrom.max = vocas.length - 1
+    elSliderTo.max = vocas.length - 1
+    elSliderToValue.innerText = vocas.length - 1
+    elSliderCurrent.max = vocas.length - 1
+
+    elSliderTo.value = vocas.length
+}
+
 
 var nextCount = 0
 function next() {
@@ -54,13 +108,26 @@ function getNextVoca() {
     if( isNaN(currentIndex) ) {
         currentIndex = 0;
     }
-    currentIndex = (currentIndex + 1) % vocas.length
+
+    if( currentIndex < elSliderFrom.value || currentIndex >= elSliderTo.value ) {
+        currentIndex = elSliderFrom.value
+    } else {
+        currentIndex++
+    }
+
+    elSliderCurrent.value = currentIndex
+    elSliderCurrentValue.innerText = currentIndex
+
 	saveVocaStatus()
     return vocas[currentIndex];
 }
 
 function getRandomVoca() {
-    randomIndex = Math.ceil(Math.random() * vocas.length)
+    randomRange = elSliderTo.value - elSliderFrom.value
+    randomIndex = Math.ceil(Math.random() * randomRange) + new Number(elSliderFrom.value)
+
+    elSliderCurrent.value = randomIndex
+    elSliderCurrentValue.innerText = randomIndex
     return vocas[randomIndex];
 }
 
@@ -69,10 +136,10 @@ function quiz() {
 
     if(cbRandom.checked) {
         voca = getRandomVoca()
-        elStatus.innerText = "Random: " + randomIndex + "/" + vocas.length
+        elStatus.innerText = "Random: " + randomIndex + "/" + (vocas.length - 1)
     } else {
         voca = getNextVoca()
-        elStatus.innerText = "Sequential: " + currentIndex + "/" + vocas.length
+        elStatus.innerText = "Sequential: " + currentIndex + "/" + (vocas.length - 1)
     }
 
     if( cbKrToEn.checked ) {
@@ -88,16 +155,6 @@ function answer() {
     } else {
         elAnswer.innerText = voca.kor
     }
-}
-
-function onLoadBody() {
-    cbKrToEn = document.getElementById("cbKrToEn");
-    loadCheckboxStatus();
-    loadVocaStatus();
-
-    elQuestion = document.getElementById("question");
-    elAnswer = document.getElementById("answer");
-    elStatus = document.getElementById("status");
 }
 
 function loadVocaStatus() {

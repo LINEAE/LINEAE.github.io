@@ -31,8 +31,21 @@
 
 
     <div class="footer">
-        <div id="status">
+        <div id="status">Status</div>
+
+        <div class="slidecontainer">
+            <span id="slider_voca_from_value">from</span>
+            <input id="slider_voca_from" type="range" min="0" max="100" value="0" class="slider">
         </div>
+        <div class="slidecontainer">
+            <span id="slider_voca_to_value">to</span>
+            <input id="slider_voca_to" type="range" min="0" max="100" value="0" class="slider">
+        </div>
+        <div class="slidecontainer">
+            <span id="slider_voca_current_value">current</span>
+            <input id="slider_voca_current" type="range" min="0" max="100" value="0" class="slider">
+        </div>
+
         <div id="options">
             <input id="cbKrToEn" type="checkbox" onclick="onclickCheckbox();">한→영
             <input id="cbRandom" type="checkbox" onclick="onclickCheckbox();">Random
