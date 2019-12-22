@@ -3,16 +3,17 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const log = console.log;
 
-var voca_file_name = "voca_data_1000"
+// config
+var voca_file_name = "voca_data_2000"
+var from = 000
+var until = from + 250
+
 var voca_data = fs.readFileSync(voca_file_name + ".js", "utf8")
 var splits = voca_data.split("\n")
 var sliced = splits.slice(2, splits.length)
 var joined = sliced.join("\n")
 var vocas = JSON.parse(joined)
 
-// test
-var from = 400
-var until = from + 100
 vocas = vocas.slice(from, until)
 
 function appendPronounce(voca) {
