@@ -3,7 +3,7 @@ class Voca {
         this.eng = eng;
         this.kor = kor;
         this.pronounce = pronounce;
-        this.url = url;
+        this.url = "http://t1.daumcdn.net/language/" + url;
     }
 
     engHtml() {

@@ -4,9 +4,9 @@ const fs = require("fs");
 const log = console.log;
 
 // config
-var voca_file_name = "voca_data_1500"
+var voca_file_name = "voca_data_2000"
 var from = 0
-var until = from + 500
+var until = from + 2
 
 var voca_data = fs.readFileSync(voca_file_name + ".js", "utf8")
 var splits = voca_data.split("\n")
@@ -34,7 +34,7 @@ function appendPronounce(voca) {
         log($("span.txt_pronounce").first().text())
 
         const voice = $("a.btn_voice.btn_listen")[0].attribs.href
-        voca[3] = voice
+        voca[3] = voice.replace("http://t1.daumcdn.net/language/", "")
 
         log(voca)
     } catch (e) {
