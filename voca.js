@@ -1,9 +1,9 @@
 class Voca {
-    constructor(eng, kor, pronounce, url) {
+    constructor(eng, kor, pronounce, audioKey) {
         this.eng = eng;
         this.kor = kor;
         this.pronounce = pronounce;
-        this.url = "http://t1.daumcdn.net/language/" + url;
+        this.audioKey = audioKey
     }
 
     engHtml() {
@@ -13,11 +13,15 @@ class Voca {
             result += "<br>" + this.pronounce
         }
 
-        if( this.url ) {
-            result += "<br> <audio controls autoplay src='" + this.url + "'>가능?</audio>"
+        if( this.audioKey ) {
+            result += "<br> <audio controls autoplay src='" + this.audioUrl() + "'>가능?</audio>"
         }
 
         return result
+    }
+
+    audioUrl() {
+        return "http://t1.daumcdn.net/language/" + this.audioKey
     }
 }
 
@@ -45,6 +49,8 @@ var elSliderCurrentValue
 var currentIndex = null
 var randomIndex = null
 
+var vocaGroupSize = 50
+
 function onLoadBody() {
     cbKrToEn = document.getElementById("cbKrToEn");
     loadCheckboxStatus();
@@ -60,24 +66,24 @@ function onLoadBody() {
 
     elSliderTo = document.getElementById("slider_voca_to");
     elSliderToValue = document.getElementById("slider_voca_to_value");
-    elSliderToValue.innerText = elSliderTo.value
+    elSliderToValue.innerText = elSliderTo.value * vocaGroupSize
 
     elSliderCurrent = document.getElementById("slider_voca_current");
     elSliderCurrentValue = document.getElementById("slider_voca_current_value");
     elSliderCurrentValue.innerText = elSliderCurrent.value
 
     elSliderFrom.oninput = function() {
-        elSliderFromValue.innerText = this.value
+        elSliderFromValue.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
         if( new Number(elSliderFrom.value) > new Number(elSliderTo.value) ) {
             elSliderTo.value = this.value
-            elSliderToValue.innerText = this.value
+            elSliderToValue.innerText = this.value * vocaGroupSize
         }
     }
     elSliderTo.oninput = function() {
-        elSliderToValue.innerText = this.value
+        elSliderToValue.innerText = this.value * vocaGroupSize
         if( new Number(elSliderTo.value) < new Number(elSliderFrom.value) ) {
             elSliderFrom.value = this.value
-            elSliderFromValue.innerText = this.value
+            elSliderFromValue.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
         }
     }
     elSliderCurrent.oninput = function() {
@@ -85,12 +91,12 @@ function onLoadBody() {
         currentIndex = new Number(this.value)
     }
 
-    elSliderFrom.max = vocas.length - 1
-    elSliderTo.max = vocas.length - 1
-    elSliderToValue.innerText = vocas.length - 1
-    elSliderCurrent.max = vocas.length - 1
+    elSliderFrom.max = vocas.length / vocaGroupSize
+    elSliderTo.max = Math.floor(vocas.length / vocaGroupSize)
+    elSliderToValue.innerText = elSliderTo.max * vocaGroupSize
+    elSliderCurrent.max = vocas.length
 
-    elSliderTo.value = vocas.length
+    elSliderTo.value = vocas.length - 1
 }
 
 
@@ -107,25 +113,25 @@ function clear() {
 
 function getNextVoca() {
     if( isNaN(currentIndex) ) {
-        currentIndex = 0;
+        currentIndex = -1;
     }
 
-    if( currentIndex < elSliderFrom.value || currentIndex >= elSliderTo.value ) {
-        currentIndex = elSliderFrom.value
+    if( currentIndex < new Number(elSliderFromValue.innerText) - 1 || currentIndex >= new Number(elSliderToValue.innerText) - 1 ) {
+        currentIndex = new Number(elSliderFromValue.innerText) - 1
     } else {
         currentIndex++
     }
 
-    elSliderCurrent.value = currentIndex
-    elSliderCurrentValue.innerText = currentIndex
+    elSliderCurrent.value = (new Number(currentIndex) + 1)
+    elSliderCurrentValue.innerText = (new Number(currentIndex) + 1)
 
 	saveVocaStatus()
     return vocas[currentIndex];
 }
 
 function getRandomVoca() {
-    randomRange = elSliderTo.value - elSliderFrom.value
-    randomIndex = Math.ceil(Math.random() * randomRange) + new Number(elSliderFrom.value)
+    randomRange = new Number(elSliderToValue.innerText) - new Number(elSliderFromValue.innerText)
+    randomIndex = Math.ceil(Math.random() * randomRange) + new Number(elSliderFromValue.innerText) - 1
 
     elSliderCurrent.value = randomIndex
     elSliderCurrentValue.innerText = randomIndex
@@ -137,10 +143,10 @@ function quiz() {
 
     if(cbRandom.checked) {
         voca = getRandomVoca()
-        elStatus.innerText = "Random: " + randomIndex + "/" + (vocas.length - 1)
+        elStatus.innerText = "Random: " + (new Number(randomIndex) + 1) + "/" + (vocas.length)
     } else {
         voca = getNextVoca()
-        elStatus.innerText = "Sequential: " + currentIndex + "/" + (vocas.length - 1)
+        elStatus.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (vocas.length)
     }
 
     if( cbKrToEn.checked ) {
