@@ -353,7 +353,7 @@ var vocaData1000 =
 ["fountain","분수","[fáuntən]","http://t1.daumcdn.net/language/4F712954062F830219"],
 ["fuse","녹이다","[fjuːz]","http://t1.daumcdn.net/language/4F7129B5020BE20228"],
 ["fusion","용해, 융합","[fjúːʒən]","http://t1.daumcdn.net/language/4F7129B6016664023F"],
-["unfuse","주입하다","[infjúːz]","http://t1.daumcdn.net/language/4F712D3B0209EF031A"],
+["infuse","주입하다","[infjúːz]","http://t1.daumcdn.net/language/4F712D3B0209EF031A"],
 ["diffuse","분산시키다, 발산하다","[difjúːz]","http://t1.daumcdn.net/language/4F7125A4042DB901F8"],
 ["confuse","혼동하다","[kənfjúːz]","http://t1.daumcdn.net/language/4F71238C04321700EB"],
 ["refuse","거절하다","[rifjúːz]","http://t1.daumcdn.net/language/4F7116600404E400F7"],
