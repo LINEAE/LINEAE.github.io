@@ -14,7 +14,7 @@ class Voca {
         }
 
         if( this.audioKey ) {
-            result += "<br> <audio controls autoplay src='" + this.audioUrl() + "'>가능?</audio>"
+            result += "<br> <audio controls autoplay id='pronounce' src='" + this.audioUrl() + "'>가능?</audio>"
         }
 
         return result
@@ -103,6 +103,9 @@ function onLoadBody() {
 var nextCount = 0
 function next() {
     if( nextCount++ %2 == 0 ) { quiz() } else { answer() }
+}
+function audioPlay() {
+    document.getElementById("pronounce").play()
 }
 
 function clear() {

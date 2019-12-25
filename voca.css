@@ -43,9 +43,16 @@ button {
     float: left;
 }
 
-button.full_button {
+button.next_button {
     display: block;
-    width: 96%;
+    width: 76%;
+    height: 80px;
+    font-size: 22px;
+}
+
+button.play_button {
+    display: block;
+    width: 20%;
     height: 80px;
     font-size: 22px;
 }
