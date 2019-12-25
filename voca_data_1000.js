@@ -465,7 +465,7 @@ var vocaData1000 =
 ["guitar","기타","[gitάːr]","4F712B0F020C5D0263"],
 ["have","가지고 있다","[həv, əv, ; hǽv]","4F712B7C0168C20254"],
 ["behavior","행동, 행위, 처신","[bihéivjər]","4F711997037FF901AC"],
-["misbehavior","내쁜 행동, 못된 짓","[miˌsbəheiˈvjər]","4F7131430358080001"],
+["misbehavior","나쁜 행동, 못된 짓","[miˌsbəheiˈvjər]","4F7131430358080001"],
 ["habit","버릇, 관습","[hǽbit]","4F712B2904315F0263"],
 ["habitual","습관적인, 평소의","[həbíʧuəl]","4F712B290432600263"],
 ["inhabit","거주하다, 살다","[inhǽbit]","4F712D3F062FF302C3"],
