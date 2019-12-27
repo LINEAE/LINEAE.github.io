@@ -529,13 +529,17 @@ function getDisplayBeVerb(subject, tense, positive) {
                     displayVerb = progressive;
                 } else {
                     if(positive) {
-                        if (subject.plural == PluralEnum.singular) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            displayVerb = " was";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
                             displayVerb = " was";
                         }else {
                             displayVerb = " were";
                         }
                     } else {
-                        if (subject.plural == PluralEnum.singular) {
+                        if (subject.person == PersonEnum.third && subject.plural == PluralEnum.singular) {
+                            displayVerb = " wasn't";
+                        }else if(subject.person == PersonEnum.first && subject.plural == PluralEnum.singular)  {
                             displayVerb = " wasn't";
                         }else {
                             displayVerb = " weren't";
