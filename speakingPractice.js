@@ -45,18 +45,22 @@ function answer() {
 }
 
 function playAudio() {
-    var result = getResult(subject,useBe ,tense, positive, ask)
+    var text = getResult(subject,useBe ,tense, positive, ask)
     
     var request = new XMLHttpRequest()
     request.withCredentials = true
-    request.open('GET', 'https://lineae.azurewebsites.net/api/tts/hello%20world', true)    
+    request.open('POST', 'https://lineae.azurewebsites.net/api/tts', true)    
     request.onreadystatechange = function () {
       if(request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-        console.log(request.responseText);
+        var audio = "https://lineae.azurewebsites.net/" + request.responseText;
+        console.log("playAudio audio:" + audio);
+        var player = ocument.getElementById("audio-player")
+        player.src = audio;
+        player.play();
       }
     };
  
-    request.send()
+    request.send(text)
 
 }
 

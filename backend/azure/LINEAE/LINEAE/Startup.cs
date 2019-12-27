@@ -46,8 +46,10 @@ namespace LINEAE
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseCors();
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("https://lineae.github.io").AllowCredentials().AllowAnyMethod();
+            }); 
 
             app.UseEndpoints(endpoints =>
             {
