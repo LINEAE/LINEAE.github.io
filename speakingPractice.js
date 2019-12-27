@@ -36,10 +36,28 @@ function quiz() {
         "\n" + getResult(subject,useBe,tense,positive, ask))
     drawTense(tense.tense,tense.progressive, tense.perfect);
     drawQuiz(subject, useBe, positive, ask);
+    setAudioPlayButtonVisible(false);
 }
 
 function answer() {
    drawResultText(subject,useBe,tense, positive, ask);
+   setAudioPlayButtonVisible(true);
+}
+
+function playAudio() {
+    var result = getResult(subject,useBe ,tense, positive, ask)
+    
+    var request = new XMLHttpRequest()
+    request.withCredentials = true
+    request.open('GET', 'https://lineae.azurewebsites.net/api/tts/hello%20world', true)    
+    request.onreadystatechange = function () {
+      if(request.readyState === XMLHttpRequest.DONE && request.status === 200) {
+        console.log(request.responseText);
+      }
+    };
+ 
+    request.send()
+
 }
 
 var nextCount = 0
@@ -48,6 +66,15 @@ function next() {
         quiz()
     } else {
         answer()
+    }
+}
+
+
+function setAudioPlayButtonVisible(visible) {
+    if(visible) {
+        document.getElementById("audio-layer").style.display="block";
+    } else {
+        document.getElementById("audio-layer").style.display="none";
     }
 }
 
@@ -108,8 +135,6 @@ function drawResultText(subject, useBe, tense, positive, ask) {
     ctx.strokeStyle = 'white';
     ctx.fillStyle = 'white';
     ctx.fillText(getResult(subject,useBe ,tense, positive, ask), 70, 250 , 340);
-
-    
 }
 
 
@@ -208,6 +233,7 @@ function getResult(subject, useBe, tense, positive, ask) {
 function onLoadBody() {
     drawBackground();
     loadCheckboxStatus();
+    setAudioPlayButtonVisible(false);
 }
 
 window.onload = function() {

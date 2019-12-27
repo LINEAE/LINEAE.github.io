@@ -16,12 +16,7 @@ namespace LINEAE
     [Route("api/[controller]")]
     public class TTSController : Controller
     {
-        // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        
 
         // GET api/<controller>/5
         [HttpGet("{text}")]
@@ -29,10 +24,24 @@ namespace LINEAE
         {
             //byte[] byteText = Encoding.UTF8.GetBytes(text);
             //var saveFileName = "cache/" + Convert.ToBase64String(byteText);
+
             var decodedText = HttpUtility.UrlDecode(text);
-            var saveFileName = "cache/" + decodedText + ".wav";
+            var ret = await SaveTTSAsync(decodedText);
+            return HttpUtility.UrlEncode(ret);
+        }
 
+        
+        
+        // POST api/<controller>
+        [HttpPost]
+        public Task<string> Post([FromBody]string value)
+        {
+            return SaveTTSAsync(value);
+        }
 
+        async private Task<string> SaveTTSAsync(string text) {
+
+            var saveFileName = getEncodedSaveFileName(text);
             var filePath = getWebPath(saveFileName);
 
             if (!new FileInfo(filePath).Exists)
@@ -73,43 +82,30 @@ namespace LINEAE
                 }));
             }
 
-           
-            return saveFileName;
 
+            return saveFileName;
         }
 
-        private string getWebPath(string fileName) {
-            return System.IO.Path.Combine("./wwwroot/", fileName);
+        private string getEncodedSaveFileName(string text) {
+            byte[] byteText = Encoding.UTF8.GetBytes(text);
+            return Convert.ToBase64String(byteText) + ".wav";
+        }
+
+        private string getWebPath(string fileName)
+        {
+            return System.IO.Path.Combine("./wwwroot/cache/", fileName);
         }
 
         private void Cortana_OnAudioAvailable(object sender, GenericEventArgs<Stream> e)
         {
             var cortana = sender as Synthesize;
-            var filePath = getWebPath( cortana.SaveFileName);
+            var filePath = getWebPath(cortana.SaveFileName);
             using (var outputStream = System.IO.File.Open(filePath, FileMode.CreateNew))
             {
                 e.EventData.CopyTo(outputStream);
             }
             e.EventData.Dispose();
         }
-        /*
-        // POST api/<controller>
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-        */
     }
 }
