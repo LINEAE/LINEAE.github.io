@@ -22,12 +22,6 @@
     <canvas class="layer-2" id="text-layer" width="480" height="320"></canvas>
 </div>
 
-<div id="audio-layer">
-    <button class="full_button"
-    id="play-sound" onclick="playAudio();">play</button>
-    <audio controls autoplay id="audio-player" style="display:none" /> 
-</div>
-
 <div>
     <input id="cbTeacher" type="checkbox" onclick="onclickCheckbox();">Teacher
     <input id="cbMovie" type="checkbox" onclick="onclickCheckbox();">Movie
@@ -58,7 +52,9 @@
 
 <div class="footer">
     <div class="toolbar-item">
-        <button class="full_button" name="next" onclick="next();">next</button>
+        <button class="next_button" name="next" onclick="next();">next</button>
+        <button class="play_button" name="audio_play" onclick="playAudio();">▶</button>
+        <audio id="audio-player" style="display:none" /> 
     </div>
 </div>
 

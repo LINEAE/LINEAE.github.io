@@ -36,15 +36,13 @@ function quiz() {
         "\n" + getResult(subject,useBe,tense,positive, ask))
     drawTense(tense.tense,tense.progressive, tense.perfect);
     drawQuiz(subject, useBe, positive, ask);
-    setAudioPlayButtonVisible(false);
 
     var player = document.getElementById("audio-player")
-    player.src = null
+    player.removeAttribute("src")
 }
 
 function answer() {
    drawResultText(subject,useBe,tense, positive, ask);
-   setAudioPlayButtonVisible(true);
 }
 
 function playAudio() {
@@ -65,15 +63,6 @@ function next() {
         quiz()
     } else {
         answer()
-    }
-}
-
-
-function setAudioPlayButtonVisible(visible) {
-    if(visible) {
-        document.getElementById("audio-layer").style.display="block";
-    } else {
-        document.getElementById("audio-layer").style.display="none";
     }
 }
 
@@ -232,7 +221,6 @@ function getResult(subject, useBe, tense, positive, ask) {
 function onLoadBody() {
     drawBackground();
     loadCheckboxStatus();
-    setAudioPlayButtonVisible(false);
 }
 
 window.onload = function() {
