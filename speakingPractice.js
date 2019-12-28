@@ -46,10 +46,10 @@ function answer() {
 
 function playAudio() {
     var text = getResult(subject,useBe ,tense, positive, ask)
-    
+    var encodedText = encodeURI(text);
     var request = new XMLHttpRequest()
     request.withCredentials = true
-    request.open('POST', 'https://lineae.azurewebsites.net/api/tts', true)    
+    request.open('GET', "https://lineae.azurewebsites.net/api/tts/" + encodedText, true)    
     request.onreadystatechange = function () {
       if(request.readyState === XMLHttpRequest.DONE && request.status === 200) {
         var audio = "https://lineae.azurewebsites.net/" + request.responseText;
@@ -60,7 +60,7 @@ function playAudio() {
       }
     };
  
-    request.send(text)
+    request.send(null);
 
 }
 
