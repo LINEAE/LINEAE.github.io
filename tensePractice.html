@@ -9,6 +9,7 @@
     <script src="models.js"></script>
     <script src="func.js"></script>
     <script src="display.js"></script>
+    <script src="tts.js"></script>
     <script src="tensePractice.js"></script>   
     <link rel="stylesheet" type="text/css" href="ae.css">
 </head>
@@ -41,7 +42,9 @@
 
 <div class="footer">
     <div class="toolbar-item">
-        <button class="full_button" name="next" onclick="next();">next</button>
+        <button class="next_button" name="next" onclick="next();">next</button>
+        <button class="play_button" name="audio_play" onclick="playAudio();">▶</button>
+        <audio id="audio-player" style="display:none" /> 
     </div>
 </div>
 

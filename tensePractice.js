@@ -16,6 +16,9 @@ function quiz() {
         "\n" + getResult(subject,verb,tense,positive))
     drawTense(tense.tense,tense.progressive, tense.perfect);
     drawQuiz(subject, verb, positive);
+
+    var player = document.getElementById("audio-player")
+    player.removeAttribute("src")
 }
 
 function answer() {
@@ -29,6 +32,18 @@ function next() {
     } else {
         answer()
     }
+}
+
+function playAudio() {
+    var text = verb.base + " " + verb.past + " " + verb.perfect
+    var player = document.getElementById("audio-player")
+    
+    if(player.src) {
+        player.play()
+    }else {
+        playSpeechFromText(player, text)
+    }
+
 }
 
 function drawQuiz(subject, verb, positive) {
