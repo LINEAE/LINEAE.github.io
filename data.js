@@ -58,7 +58,7 @@ var irregularVerbsData = [
 ["stick", "stuck", "stuck", "sticking", "찌르다,붙이다", ""],
 ["strike", "struck", "struck", "striking", "치다,때리다", ""],
 ["awake", "awoke", "awoken", "awaking", "(잠에서)깨우다", ""],
-["get", "got", "gotten/got", "getting", "얻다,되다", ""],
+["get", "got", "gotten(got)", "getting", "얻다,되다", ""],
 ["shine", "shone", "shone", "shining", "빛나다", ""],
 ["win", "won", "won", "wining", "이기다,얻다", ""],
 ["bend", "bent", "bent", "bending", "구부리다", ""],
