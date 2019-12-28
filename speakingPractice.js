@@ -52,9 +52,9 @@ function playAudio() {
     request.open('GET', "https://lineae.azurewebsites.net/api/tts/" + encodedText, true)    
     request.onreadystatechange = function () {
       if(request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-        var audio = "https://lineae.azurewebsites.net/" + request.responseText;
+        var audio = "https://lineae.azurewebsites.net/cache/" + request.responseText;
         console.log("playAudio audio:" + audio);
-        var player = ocument.getElementById("audio-player")
+        var player = document.getElementById("audio-player")
         player.src = audio;
         player.play();
       }
