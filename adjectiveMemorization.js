@@ -21,6 +21,9 @@ function quiz() {
     } else {
         drawQuizText(adjective);
     }
+
+    var player = document.getElementById("audio-player")
+    player.removeAttribute("src")
 }
 
 function answer() {
@@ -29,6 +32,18 @@ function answer() {
     } else {
         drawResultText(adjective);
     }
+}
+
+function playAudio() {
+    var text = adjective.eng
+    var player = document.getElementById("audio-player")
+    
+    if(player.src) {
+        player.play()
+    }else {
+        playSpeechFromText(player, text)
+    }
+
 }
 
 function pickAdjective() {
