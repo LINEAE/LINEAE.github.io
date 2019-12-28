@@ -37,6 +37,9 @@ function quiz() {
     drawTense(tense.tense,tense.progressive, tense.perfect);
     drawQuiz(subject, useBe, positive, ask);
     setAudioPlayButtonVisible(false);
+
+    var player = document.getElementById("audio-player")
+    player.src = null
 }
 
 function answer() {
@@ -46,21 +49,13 @@ function answer() {
 
 function playAudio() {
     var text = getResult(subject,useBe ,tense, positive, ask)
-    var encodedText = encodeURI(text);
-    var request = new XMLHttpRequest()
-    request.withCredentials = true
-    request.open('GET', "https://lineae.azurewebsites.net/api/tts/" + encodedText, true)    
-    request.onreadystatechange = function () {
-      if(request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-        var audio = "https://lineae.azurewebsites.net/cache/" + request.responseText;
-        console.log("playAudio audio:" + audio);
-        var player = document.getElementById("audio-player")
-        player.src = audio;
-        player.play();
-      }
-    };
- 
-    request.send(null);
+    var player = document.getElementById("audio-player")
+    
+    if(player.src) {
+        player.play()
+    }else {
+        playSpeechFromText(player, text)
+    }
 
 }
 
@@ -230,7 +225,7 @@ function getResult(subject, useBe, tense, positive, ask) {
             obj = movie;
         }
 
-        return capitialize(name + displayTense + displayVerb + " " + obj);
+        return capitialize(name + displayTense + displayVerb + " " + obj + ".");
     }
 }
 
