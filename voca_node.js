@@ -4,8 +4,8 @@ const fs = require("fs");
 const log = console.log;
 
 // config
-var voca_file_name = "voca_data_2000"
-var from = 250
+var voca_file_name = "voca_data_2500"
+var from = 0
 var until = from + 250
 
 var voca_data = fs.readFileSync(voca_file_name + ".js", "utf8")
