@@ -5,8 +5,8 @@ const log = console.log;
 
 // config
 var voca_file_name = "voca_data_2500"
-var from = 0
-var until = from + 250
+var from = 250
+var until = from + 252
 
 var voca_data = fs.readFileSync(voca_file_name + ".js", "utf8")
 var splits = voca_data.split("\n")
