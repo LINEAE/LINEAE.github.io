@@ -1,0 +1,108 @@
+#stage {
+    font-size:6px;
+    text-align:center;
+}
+
+#question {
+    margin-top:4px;
+    margin-bottom:12px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+#answer {
+    margin-top:4px;
+    margin-bottom:12px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+#options {
+    margin-bottom:20px;
+}
+
+.guide {
+    margin-top:8px;
+    margin-bottom:8px;
+    font-size:20px;
+    color:#666666;
+}
+
+input[type=checkbox] {
+    width:30px;
+    height:30px;
+}
+
+
+
+button {
+    width:50%;
+    height:50px;
+    margin-left: 0px;
+    margin-right: 0px;
+    float: left;
+}
+
+button.next_button {
+    display: block;
+    width: 76%;
+    height: 80px;
+    font-size: 22px;
+}
+
+button.play_button {
+    display: block;
+    width: 20%;
+    height: 80px;
+    font-size: 22px;
+}
+
+.footer {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+}
+
+
+
+
+
+.slidecontainer {
+  width: 96%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
