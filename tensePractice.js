@@ -96,30 +96,30 @@ function pickSubject() {
 
 function pickTense() {
     var arTense = []
-    if(cbPresent.checked == false && cbPast.checked == false && cbFuture.checked == false) {
+    if(cbPresent.checked() == false && cbPast.checked() == false && cbFuture.checked() == false) {
         arTense.push(TenseEnum.present)
         arTense.push(TenseEnum.past)
         arTense.push(TenseEnum.future)
     }
     else {
-        if(cbPresent.checked) { arTense.push(TenseEnum.present) }
-        if(cbPast.checked) { arTense.push(TenseEnum.past) }
-        if(cbFuture.checked) { arTense.push(TenseEnum.future) }
+        if(cbPresent.checked()) { arTense.push(TenseEnum.present) }
+        if(cbPast.checked()) { arTense.push(TenseEnum.past) }
+        if(cbFuture.checked()) { arTense.push(TenseEnum.future) }
     }
     shuffle(arTense)
 
     var progressive = false
-    if(cbProgressive.checked == cbNotProgressive.checked) {
+    if(cbProgressive.checked() == cbNotProgressive.checked()) {
         progressive = Math.floor(Math.random() * 2) == 0
     } else {
-        progressive = cbProgressive.checked;
+        progressive = cbProgressive.checked();
     }
 
     var perfect = false
-    if(cbPerfect.checked == cbNotPerfect.checked) {
+    if(cbPerfect.checked() == cbNotPerfect.checked()) {
         perfect = Math.floor(Math.random() * 2) == 0
     } else {
-        perfect = cbPerfect.checked;
+        perfect = cbPerfect.checked();
     }
 
     return new Tense(arTense[0], progressive, perfect)
@@ -132,10 +132,10 @@ function pickVerb() {
 
 function pickPositive() {
     var positive = true
-    if(cbPositive.checked == cbNegative.checked) {
+    if(cbPositive.checked() == cbNegative.checked()) {
         positive = Math.floor(Math.random() * 2) == 0
     } else {
-        positive = cbPositive.checked;
+        positive = cbPositive.checked();
     }    
     return positive
 }
@@ -152,91 +152,30 @@ function getResult(subject, verb, tense, positive) {
 
 function onLoadBody() {
     drawBackground();
-    loadCheckboxStatus();
-}
 
-window.onload = function() {
-    cbPast = document.getElementById("cbPast");
-    cbPresent = document.getElementById("cbPresent");
-    cbFuture = document.getElementById("cbFuture");
+    cbPast = new LSCheckbox(document.getElementById("cbPast"), "cbTensePast", true);
+    cbPresent = new LSCheckbox(document.getElementById("cbPresent"), "cbTensePresent", true);
+    cbFuture = new LSCheckbox(document.getElementById("cbFuture"), "cbTenseFuture", true);
 
-    cbProgressive = document.getElementById("cbProgressive");
-    cbNotProgressive = document.getElementById("cbNotProgressive");
-    cbPerfect = document.getElementById("cbPerfect");
-    cbNotPerfect = document.getElementById("cbNotPerfect");
+    cbProgressive = new LSCheckbox(document.getElementById("cbProgressive"), "cbTenseProgressive", true);
+    cbNotProgressive = new LSCheckbox(document.getElementById("cbNotProgressive"), "cbTenseNotProgressive", true);
+    cbPerfect = new LSCheckbox(document.getElementById("cbPerfect"), "cbTensePerfect", true);
+    cbNotPerfect = new LSCheckbox(document.getElementById("cbNotPerfect"), "cbTenseNotPerfect", true);
 
-    cbPositive = document.getElementById("cbPositive");
-    cbNegative = document.getElementById("cbNegative");
+    cbPositive = new LSCheckbox(document.getElementById("cbPositive"), "cbTensePositive", true);
+    cbNegative = new LSCheckbox(document.getElementById("cbNegative"), "cbTenseNegative", true);
 }
 
 function onclickCheckbox(event) {
-    saveCheckboxStatus();
-}
+    cbPast.save();
+    cbPresent.save();
+    cbFuture.save();
 
-function loadCheckboxStatus() {
-    if( null == window.localStorage.getItem("cbPast") ) {
-        cbPast.checked = true;
-    } else {
-        cbPast.checked = window.localStorage.getItem("cbPast") == "true";
-    }
+    cbProgressive.save();
+    cbNotProgressive.save();
+    cbPerfect.save();
+    cbNotPerfect.save();
 
-    if( null == window.localStorage.getItem("cbPresent") ) {
-        cbPresent.checked = true;
-    } else {
-        cbPresent.checked = window.localStorage.getItem("cbPresent") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbFuture") ) {
-        cbFuture.checked = true;
-    } else {
-        cbFuture.checked = window.localStorage.getItem("cbFuture") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbProgressive") ) {
-        cbProgressive.checked = true;
-    } else {
-        cbProgressive.checked = window.localStorage.getItem("cbProgressive") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbNotProgressive") ) {
-        cbNotProgressive.checked = true;
-    } else {
-        cbNotProgressive.checked = window.localStorage.getItem("cbNotProgressive") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbPerfect") ) {
-        cbPerfect.checked = true;
-    } else {
-        cbPerfect.checked = window.localStorage.getItem("cbPerfect") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbNotPerfect") ) {
-        cbNotPerfect.checked = true;
-    } else {
-        cbNotPerfect.checked = window.localStorage.getItem("cbNotPerfect") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbPositive") ) {
-        cbPositive.checked = true;
-    } else {
-        cbPositive.checked = window.localStorage.getItem("cbPositive") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbNegative") ) {
-        cbNegative.checked = true;
-    } else {
-        cbNegative.checked = window.localStorage.getItem("cbNegative") == "true";
-    }
-}
-
-function saveCheckboxStatus() {
-    window.localStorage.setItem("cbPast", cbPast.checked);
-    window.localStorage.setItem("cbPresent", cbPresent.checked);
-    window.localStorage.setItem("cbFuture", cbFuture.checked);
-    window.localStorage.setItem("cbProgressive", cbProgressive.checked);
-    window.localStorage.setItem("cbNotProgressive", cbNotProgressive.checked);
-    window.localStorage.setItem("cbPerfect", cbPerfect.checked);
-    window.localStorage.setItem("cbNotPerfect", cbNotPerfect.checked);
-    window.localStorage.setItem("cbPositive", cbPositive.checked);
-    window.localStorage.setItem("cbNegative", cbNegative.checked);
+    cbPositive.save();
+    cbNegative.save();
 }

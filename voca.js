@@ -25,7 +25,6 @@ class Voca {
     }
 }
 
-
 const vocas = [];
 (function () {
     for (var i = 0; i < vocaDatas.length; i++) {
@@ -52,8 +51,8 @@ var randomIndex = null
 var vocaGroupSize = 50
 
 function onLoadBody() {
-    cbKrToEn = document.getElementById("cbKrToEn");
-    loadCheckboxStatus();
+    lsCheckVocaKrToEn = new LSCheckbox(document.getElementById("cbVocaKrToEn"), "cbVocaKrToEn", true)
+    lsCheckVocaRandom = new LSCheckbox(document.getElementById("cbVocaRandom"), "cbVocaRandom", false)
     loadVocaStatus();
 
     elQuestion = document.getElementById("question");
@@ -144,7 +143,7 @@ function getRandomVoca() {
 function quiz() {
     clear()
 
-    if(cbRandom.checked) {
+    if( lsCheckVocaRandom.checked() ) {
         voca = getRandomVoca()
         elStatus.innerText = "Random: " + (new Number(randomIndex) + 1) + "/" + (vocas.length)
     } else {
@@ -152,7 +151,7 @@ function quiz() {
         elStatus.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (vocas.length)
     }
 
-    if( cbKrToEn.checked ) {
+    if( lsCheckVocaKrToEn.checked() ) {
         elQuestion.innerText = voca.kor
     } else {
         elQuestion.innerHTML = voca.engHtml()
@@ -160,7 +159,7 @@ function quiz() {
 }
 
 function answer() {
-    if( cbKrToEn.checked ) {
+    if( cbVocaKrToEn.checked ) {
         elAnswer.innerHTML = voca.engHtml()
     } else {
         elAnswer.innerText = voca.kor
@@ -176,25 +175,8 @@ function saveVocaStatus() {
     window.localStorage.setItem("currentIndex", currentIndex);
 }
 
-function onclickCheckbox(event) {
-    saveCheckboxStatus();
+function onclickCheckbox() {
+    lsCheckVocaKrToEn.save();
+    lsCheckVocaRandom.save();
     nextCount = 0
-}
-
-function loadCheckboxStatus() {
-    if( null == window.localStorage.getItem("cbKrToEn") ) {
-        cbKrToEn.checked = true;
-    } else {
-        cbKrToEn.checked = window.localStorage.getItem("cbKrToEn") == "true";
-    }
-    if( null == window.localStorage.getItem("cbRandom") ) {
-        cbRandom.checked = false;
-    } else {
-        cbRandom.checked = window.localStorage.getItem("cbRandom") == "true";
-    }
-}
-
-function saveCheckboxStatus() {
-    window.localStorage.setItem("cbKrToEn", cbKrToEn.checked);
-    window.localStorage.setItem("cbKrToEn", cbKrToEn.checked);
 }
