@@ -35,9 +35,6 @@ const vocas = [];
 
 var voca = null
 
-var currentIndex = null
-var randomIndex = null
-
 var vocaGroupSize = 50
 
 function onLoadBody() {
@@ -70,10 +67,9 @@ function onLoadBody() {
 
     slider_from.max = vocas.length / vocaGroupSize
     slider_to.max = Math.floor(vocas.length / vocaGroupSize)
-    span_to.innerText = slider_to.max * vocaGroupSize
     slider_current.max = vocas.length
 
-    slider_to.value = vocas.length - 1
+    slider_to.value = 1
 }
 
 
@@ -88,9 +84,11 @@ function audioPlay() {
 function clear() {
     div_question.innerText=""
     div_answer.innerText=""
-    status.innerText=""
+    div_status.innerText=""
 }
 
+
+var currentIndex = null
 function getNextVoca() {
     if( isNaN(currentIndex) ) {
         currentIndex = -1;
@@ -109,13 +107,26 @@ function getNextVoca() {
     return vocas[currentIndex];
 }
 
+var randomStartIndex = 0
+var randomEndIndex = 0
+var randomQuizSlot = []
 function getRandomVoca() {
-    randomRange = new Number(span_to.innerText) - new Number(span_from.innerText)
-    randomIndex = Math.ceil(Math.random() * randomRange) + new Number(span_from.innerText) - 1
+    var currentRandomStartIndex = span_from.innerText
+    var currentRandomEndIndex = span_to.innerText
+    if( randomStartIndex == currentRandomStartIndex && randomEndIndex == currentRandomEndIndex ) {
+        if( randomQuizSlot.length == 0 ) {
+            randomQuizSlot = vocas.slice(new Number(randomStartIndex) - 1, new Number(randomEndIndex))
+            shuffle(randomQuizSlot)
+        }
+    } else {
+        randomStartIndex = currentRandomStartIndex
+        randomEndIndex = currentRandomEndIndex
 
-    slider_current.value = randomIndex
-    span_current.innerText = randomIndex
-    return vocas[randomIndex];
+        randomQuizSlot = vocas.slice(new Number(randomStartIndex) - 1, new Number(randomEndIndex))
+        shuffle(randomQuizSlot)
+    }
+
+    return randomQuizSlot.pop()
 }
 
 function quiz() {
@@ -123,10 +134,10 @@ function quiz() {
 
     if( lsCheckVocaRandom.checked() ) {
         voca = getRandomVoca()
-        status.innerText = "Random: " + (new Number(randomIndex) + 1) + "/" + (vocas.length)
+        div_status.innerText = "Random: " + randomStartIndex + "~" + randomEndIndex + ", remains:" + (randomQuizSlot.length)
     } else {
         voca = getNextVoca()
-        status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (vocas.length)
+        div_status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (vocas.length)
     }
 
     if( lsCheckVocaKrToEn.checked() ) {
