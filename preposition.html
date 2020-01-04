@@ -16,32 +16,32 @@
     <div id="stage">
         <div>
             <div class="guide">Question</div>
-            <div id="question">_</div>
+            <div id="div_question">_</div>
         </div>
 
         <div>
             <div class="guide">Answer</div>
-            <div id="answer">_</div>
+            <div id="div_answer">_</div>
         </div>
     </div>
 
 
     <div class="footer">
-        <div id="status">Status</div>
+        <div id="div_status">Status</div>
 
         <div class="slidecontainer">
             <span>Auto Interval(ms) : </span>
-            <span id="slider_preposition_interval_value">Interval</span>
-            <input id="slider_preposition_interval" type="range" min="1000" max="5000" value="0" class="slider">
+            <span id="span_interval">Interval</span>
+            <input id="slider_interval" type="range" min="1000" max="5000" value="0" class="slider">
             <span>Current Index : </span>
-            <span id="slider_preposition_current_value">Current index</span>
-            <input id="slider_preposition_current" type="range" min="1" max="100" value="0" class="slider">
+            <span id="span_current">Current index</span>
+            <input id="slider_current" type="range" min="1" max="100" value="0" class="slider">
         </div>
 
         <div id="options">
-            <input id="cbPrepositionRandom" type="checkbox" onclick="onclickCheckbox();">Random
-            <input id="cbPrepositionHideSubject" type="checkbox" onclick="onclickCheckbox();">Hide Subject
-            <input id="cbPrepositionHideObject" type="checkbox" onclick="onclickCheckbox();">Hide Object
+            <input id="checkbox_random" type="checkbox" onclick="onclickCheckbox();">Random
+            <input id="checkbox_hide_subject" type="checkbox" onclick="onclickCheckbox();">Hide Subject
+            <input id="checkbox_hide_object" type="checkbox" onclick="onclickCheckbox();">Hide Object
         </div>
         <div class="toolbar-item">
             <button class="next_button" name="next" onclick="next();">next</button>

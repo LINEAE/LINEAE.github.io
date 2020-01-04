@@ -39,45 +39,29 @@ const prepositions = [];
 
 var preposition = null
 
-var elQuestion
-var elAnswer
-var elStatus
-var elSliderCurrent
-var elSliderCurrentValue
-
-var currentIndex = null
-var randomIndex = null
 var intervalValue = null
 
 function onLoadBody() {
-    lsCheckPrepositionRandom = new LSCheckbox(document.getElementById("cbPrepositionRandom"), "cbPrepositionRandom", false)
-    lsCheckPrepositionHideSubject = new LSCheckbox(document.getElementById("cbPrepositionHideSubject"), "cbPrepositionHideSubject", false)
-    lsCheckPrepositionHideObject = new LSCheckbox(document.getElementById("cbPrepositionHideObject"), "cbPrepositionHideObject", false)
+    lsCheckPrepositionRandom = new LSCheckbox(checkbox_random, "cbPrepositionRandom", false)
+    lsCheckPrepositionHideSubject = new LSCheckbox(checkbox_hide_subject, "cbPrepositionHideSubject", false)
+    lsCheckPrepositionHideObject = new LSCheckbox(checkbox_hide_object, "cbPrepositionHideObject", false)
     loadCurrentStatus();
 
-    elQuestion = document.getElementById("question");
-    elAnswer = document.getElementById("answer");
-    elStatus = document.getElementById("status");
+    slider_current.value = currentIndex
+    span_current.innerText = slider_current.value
 
-    elSliderCurrent = document.getElementById("slider_preposition_current");
-    elSliderCurrentValue = document.getElementById("slider_preposition_current_value");
-    elSliderCurrent.value = currentIndex
-    elSliderCurrentValue.innerText = elSliderCurrent.value
-
-    elSliderCurrent.oninput = function() {
-        elSliderCurrentValue.innerText = this.value
+    slider_current.oninput = function() {
+        span_current.innerText = this.value
         currentIndex = new Number(this.value)
     }
 
-    elSliderCurrent.max = prepositions.length
+    slider_current.max = prepositions.length
 
-    elSliderInterval = document.getElementById("slider_preposition_interval");
-    elSliderIntervalValue = document.getElementById("slider_preposition_interval_value");
-    elSliderInterval.value = intervalValue
-    elSliderIntervalValue.innerText = elSliderInterval.value
+    slider_interval.value = intervalValue
+    span_interval.innerText = slider_interval.value
 
-    elSliderInterval.oninput = function() {
-        elSliderIntervalValue.innerText = this.value
+    slider_interval.oninput = function() {
+        span_interval.innerText = this.value
         intervalValue = new Number(this.value)
     }
 }
@@ -112,18 +96,19 @@ function autoPlay() {
 }
 
 function clear() {
-    elQuestion.innerText=""
-    elAnswer.innerText=""
-    elStatus.innerText=""
+    div_question.innerText=""
+    div_answer.innerText=""
+    div_status.innerText=""
 }
 
+var currentIndex = null
 function getNextPreposition() {
     if( isNaN(currentIndex) ) {
         currentIndex = 0;
     }
 
-    elSliderCurrent.value = (new Number(currentIndex) + 1)
-    elSliderCurrentValue.innerText = (new Number(currentIndex) + 1)
+    slider_current.value = (new Number(currentIndex) + 1)
+    span_current.innerText = (new Number(currentIndex) + 1)
 
     var nextPreposition = prepositions[currentIndex];
 
@@ -133,12 +118,14 @@ function getNextPreposition() {
     return nextPreposition
 }
 
+var randomQuizSlot = []
 function getRandomPreposition() {
-    randomIndex = Math.ceil(Math.random() * prepositions.length) - 1
+    if( randomQuizSlot.length == 0 ) {
+        randomQuizSlot = prepositions.slice()
+        shuffle(randomQuizSlot)
+    }
 
-    elSliderCurrent.value = randomIndex
-    elSliderCurrentValue.innerText = randomIndex
-    return prepositions[randomIndex];
+    return randomQuizSlot.pop()
 }
 
 function quiz() {
@@ -146,17 +133,17 @@ function quiz() {
 
     if( lsCheckPrepositionRandom.checked() ) {
         preposition = getRandomPreposition()
-        elStatus.innerText = "Random: " + (new Number(randomIndex) + 1) + "/" + (prepositions.length)
+        div_status.innerText = "Random: remains: " + randomQuizSlot.length + "/" + prepositions.length
     } else {
         preposition = getNextPreposition()
-        elStatus.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (prepositions.length)
+        div_status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (prepositions.length)
     }
 
     if( null != timerId ) {
-        elStatus.innerText += " [interval=" + lastInterval + "]"
+        div_status.innerText += " [interval=" + lastInterval + "]"
     }
 
-    elQuestion.innerHTML = preposition.engHtml()
+    div_question.innerHTML = preposition.engHtml()
 
     if( lsCheckPrepositionHideSubject.checked() && lsCheckPrepositionHideObject.checked() ) {
         next()
@@ -181,7 +168,7 @@ function answer() {
         result = "skip"
     }
 
-    elAnswer.innerHTML = result
+    div_answer.innerHTML = result
 }
 
 function loadCurrentStatus() {
