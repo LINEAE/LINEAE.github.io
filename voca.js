@@ -35,67 +35,45 @@ const vocas = [];
 
 var voca = null
 
-var elQuestion
-var elAnswer
-var elStatus
-var elSliderFrom
-var elSliderFromValue
-var elSliderTo
-var elSliderToValue
-var elSliderCurrent
-var elSliderCurrentValue
-
 var currentIndex = null
 var randomIndex = null
 
 var vocaGroupSize = 50
 
 function onLoadBody() {
-    lsCheckVocaKrToEn = new LSCheckbox(document.getElementById("cbVocaKrToEn"), "cbVocaKrToEn", true)
-    lsCheckVocaRandom = new LSCheckbox(document.getElementById("cbVocaRandom"), "cbVocaRandom", false)
+    lsCheckVocaKrToEn = new LSCheckbox(checkbox_kr_to_en, "voca_kr_to_en", true)
+    lsCheckVocaRandom = new LSCheckbox(checkbox_random, "vocal_random", false)
     loadVocaStatus();
 
-    elQuestion = document.getElementById("question");
-    elAnswer = document.getElementById("answer");
-    elStatus = document.getElementById("status");
+    span_from.innerText = slider_from.value
+    span_to.innerText = slider_to.value * vocaGroupSize
+    span_current.innerText = slider_current.value
 
-    elSliderFrom = document.getElementById("slider_voca_from");
-    elSliderFromValue = document.getElementById("slider_voca_from_value");
-    elSliderFromValue.innerText = elSliderFrom.value
-
-    elSliderTo = document.getElementById("slider_voca_to");
-    elSliderToValue = document.getElementById("slider_voca_to_value");
-    elSliderToValue.innerText = elSliderTo.value * vocaGroupSize
-
-    elSliderCurrent = document.getElementById("slider_voca_current");
-    elSliderCurrentValue = document.getElementById("slider_voca_current_value");
-    elSliderCurrentValue.innerText = elSliderCurrent.value
-
-    elSliderFrom.oninput = function() {
-        elSliderFromValue.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
-        if( new Number(elSliderFrom.value) > new Number(elSliderTo.value) ) {
-            elSliderTo.value = this.value
-            elSliderToValue.innerText = this.value * vocaGroupSize
+    slider_from.oninput = function() {
+        span_from.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
+        if( new Number(slider_from.value) > new Number(slider_to.value) ) {
+            slider_to.value = this.value
+            span_to.innerText = this.value * vocaGroupSize
         }
     }
-    elSliderTo.oninput = function() {
-        elSliderToValue.innerText = this.value * vocaGroupSize
-        if( new Number(elSliderTo.value) < new Number(elSliderFrom.value) ) {
-            elSliderFrom.value = this.value
-            elSliderFromValue.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
+    slider_to.oninput = function() {
+        span_to.innerText = this.value * vocaGroupSize
+        if( new Number(slider_to.value) < new Number(slider_from.value) ) {
+            slider_from.value = this.value
+            span_from.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
         }
     }
-    elSliderCurrent.oninput = function() {
-        elSliderCurrentValue.innerText = this.value
+    slider_current.oninput = function() {
+        span_current.innerText = this.value
         currentIndex = new Number(this.value)
     }
 
-    elSliderFrom.max = vocas.length / vocaGroupSize
-    elSliderTo.max = Math.floor(vocas.length / vocaGroupSize)
-    elSliderToValue.innerText = elSliderTo.max * vocaGroupSize
-    elSliderCurrent.max = vocas.length
+    slider_from.max = vocas.length / vocaGroupSize
+    slider_to.max = Math.floor(vocas.length / vocaGroupSize)
+    span_to.innerText = slider_to.max * vocaGroupSize
+    slider_current.max = vocas.length
 
-    elSliderTo.value = vocas.length - 1
+    slider_to.value = vocas.length - 1
 }
 
 
@@ -104,13 +82,13 @@ function next() {
     if( nextCount++ %2 == 0 ) { quiz() } else { answer() }
 }
 function audioPlay() {
-    document.getElementById("pronounce").play()
+    pronounce.play()
 }
 
 function clear() {
-    elQuestion.innerText=""
-    elAnswer.innerText=""
-    elStatus.innerText=""
+    div_question.innerText=""
+    div_answer.innerText=""
+    status.innerText=""
 }
 
 function getNextVoca() {
@@ -118,25 +96,25 @@ function getNextVoca() {
         currentIndex = -1;
     }
 
-    if( currentIndex < new Number(elSliderFromValue.innerText) - 1 || currentIndex >= new Number(elSliderToValue.innerText) - 1 ) {
-        currentIndex = new Number(elSliderFromValue.innerText) - 1
+    if( currentIndex < new Number(span_from.innerText) - 1 || currentIndex >= new Number(span_to.innerText) - 1 ) {
+        currentIndex = new Number(span_from.innerText) - 1
     } else {
         currentIndex++
     }
 
-    elSliderCurrent.value = (new Number(currentIndex) + 1)
-    elSliderCurrentValue.innerText = (new Number(currentIndex) + 1)
+    slider_current.value = (new Number(currentIndex) + 1)
+    span_current.innerText = (new Number(currentIndex) + 1)
 
 	saveVocaStatus()
     return vocas[currentIndex];
 }
 
 function getRandomVoca() {
-    randomRange = new Number(elSliderToValue.innerText) - new Number(elSliderFromValue.innerText)
-    randomIndex = Math.ceil(Math.random() * randomRange) + new Number(elSliderFromValue.innerText) - 1
+    randomRange = new Number(span_to.innerText) - new Number(span_from.innerText)
+    randomIndex = Math.ceil(Math.random() * randomRange) + new Number(span_from.innerText) - 1
 
-    elSliderCurrent.value = randomIndex
-    elSliderCurrentValue.innerText = randomIndex
+    slider_current.value = randomIndex
+    span_current.innerText = randomIndex
     return vocas[randomIndex];
 }
 
@@ -145,24 +123,24 @@ function quiz() {
 
     if( lsCheckVocaRandom.checked() ) {
         voca = getRandomVoca()
-        elStatus.innerText = "Random: " + (new Number(randomIndex) + 1) + "/" + (vocas.length)
+        status.innerText = "Random: " + (new Number(randomIndex) + 1) + "/" + (vocas.length)
     } else {
         voca = getNextVoca()
-        elStatus.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (vocas.length)
+        status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (vocas.length)
     }
 
     if( lsCheckVocaKrToEn.checked() ) {
-        elQuestion.innerText = voca.kor
+        div_question.innerText = voca.kor
     } else {
-        elQuestion.innerHTML = voca.engHtml()
+        div_question.innerHTML = voca.engHtml()
     }
 }
 
 function answer() {
-    if( cbVocaKrToEn.checked ) {
-        elAnswer.innerHTML = voca.engHtml()
+    if( checkbox_kr_to_en.checked ) {
+        div_answer.innerHTML = voca.engHtml()
     } else {
-        elAnswer.innerText = voca.kor
+        div_answer.innerText = voca.kor
     }
 }
 

@@ -3,14 +3,14 @@
     text-align:center;
 }
 
-#question {
+#div_question {
     margin-top:4px;
     margin-bottom:12px;
     font-size:30px;
     font-weight:bold;
 }
 
-#answer {
+#div_answer {
     margin-top:4px;
     margin-bottom:12px;
     font-size:30px;
