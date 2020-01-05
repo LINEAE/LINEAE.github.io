@@ -56,6 +56,7 @@ function onLoadBody() {
     }
 
     slider_current.max = prepositions.length
+    progress_random.max = prepositions.length
 
     slider_interval.value = intervalValue
     span_interval.innerText = slider_interval.value
@@ -125,6 +126,7 @@ function getRandomPreposition() {
         shuffle(randomQuizSlot)
     }
 
+    progress_random.value = prepositions.length - randomQuizSlot.length + 1
     return randomQuizSlot.pop()
 }
 
@@ -132,9 +134,11 @@ function quiz() {
     clear()
 
     if( lsCheckPrepositionRandom.checked() ) {
+        progress_random.style.display = "block"
         preposition = getRandomPreposition()
         div_status.innerText = "Random: remains: " + randomQuizSlot.length + "/" + prepositions.length
     } else {
+        progress_random.style.display = "none"
         preposition = getNextPreposition()
         div_status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (prepositions.length)
     }

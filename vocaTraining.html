@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=500, user-scalable=no">
+    <title>단어연습</title>
+    <link rel="apple-touch-icon" href="icon-72x72.png">
+    <script src="common.js"></script>
+    <script src="voca_data.js"></script>
+    <script src="vocaTraining.js"></script>
+    <link rel="stylesheet" type="text/css" href="voca.css">
+</head>
+
+<body onload="onLoadBody();">
+    <div>
+        Voca Training
+    </div>
+
+    <div id="stage">
+        <div>
+            <div class="guide">Question</div>
+            <div id="div_question">_</div>
+        </div>
+
+        <div>
+            <div class="guide">Answer</div>
+            <div id="div_answer">_</div>
+        </div>
+    </div>
+
+
+    <div class="footer">
+        <div id="div_status">Status</div>
+
+        <div id="div_slot_container">
+        </div>
+
+        <div id="options">
+            <input id="checkbox_kr_to_en" type="checkbox" onclick="onclickCheckbox();">한→영
+            <input id="checkbox_play_sound" type="checkbox" onclick="onclickCheckbox();">play sound
+        </div>
+        <div class="toolbar-item">
+            <div id="div_start">
+                <button class="full_size" name="next" onclick="quiz();">❓ Quiz Start</button>
+                <button class="full_size" name="next" onclick="initialize();">⛔ Initialize</button>
+            </div>
+            <button id="btn_answer" class="full_size" name="next" onclick="answer();">✅ Answer</button>
+            <div id="div_confirm">
+                <button class="half_size" onclick="forgot();">❌ Forgot</button>
+                <button class="half_size" onclick="remembered();">⭕ Remembered</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

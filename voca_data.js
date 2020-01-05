@@ -1,5 +1,6 @@
 // 영어, 한국어, 발음기호, audio url key
-var vocaDatas = [
+var vocaDatas = 
+[
 ["ball","둥근것, 공","[bɔːl]","4F7114A001264100A8"],
 ["balloon","풍선, 기구","[bəlúːn]","4F7114CA066F1400F1"],
 ["bell","종, 벨","[bel]","4F7119CD03279A01B2"],
@@ -2510,5 +2511,4 @@ var vocaDatas = [
 ["dizzy","어지러운","[dízi]","4F71260D04336D0141"], 
 ["lazy","게으른","[léizi]","4F712EFD0223A00012"],
 ["zone","영역","[zoun]","4F7120380168C20046"]
-
 ]

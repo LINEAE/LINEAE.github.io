@@ -21,6 +21,25 @@
     margin-bottom:20px;
 }
 
+progress {
+  display:block;
+}
+
+.progress_src {
+  margin-top: 2px;
+  margin-bottom: 6px;
+  width: 480px;
+  height: 10px;
+}
+.progress_slot {
+  margin-top: 2px;
+  margin-bottom: 1px;
+  width: 480px;
+}
+.current_slot {
+  height: 24px;
+}
+
 .guide {
     margin-top:8px;
     margin-bottom:8px;
@@ -55,6 +74,20 @@ button.play_button {
     width: 20%;
     height: 80px;
     font-size: 22px;
+}
+
+button.full_size {
+  width:96%;
+  height:50px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+button.half_size {
+  width:48%;
+  height:50px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .footer {

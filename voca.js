@@ -115,18 +115,27 @@ function getRandomVoca() {
     var currentRandomEndIndex = span_to.innerText
     if( randomStartIndex == currentRandomStartIndex && randomEndIndex == currentRandomEndIndex ) {
         if( randomQuizSlot.length == 0 ) {
-            randomQuizSlot = vocas.slice(new Number(randomStartIndex) - 1, new Number(randomEndIndex))
+            for( var i = randomStartIndex; i <= randomEndIndex; i++ ) {
+                randomQuizSlot.push(eval(i))
+            }
             shuffle(randomQuizSlot)
         }
     } else {
         randomStartIndex = currentRandomStartIndex
         randomEndIndex = currentRandomEndIndex
 
-        randomQuizSlot = vocas.slice(new Number(randomStartIndex) - 1, new Number(randomEndIndex))
+        randomQuizSlot = []
+        for( var i = randomStartIndex; i <= randomEndIndex; i++ ) {
+            randomQuizSlot.push(eval(i))
+        }
         shuffle(randomQuizSlot)
     }
 
-    return randomQuizSlot.pop()
+    var randomIndex = randomQuizSlot.pop()
+    slider_current.value = (new Number(randomIndex) + 1)
+    span_current.innerText = (new Number(randomIndex) + 1)
+
+    return vocas[randomIndex]
 }
 
 function quiz() {

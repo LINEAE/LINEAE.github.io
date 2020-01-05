@@ -27,6 +27,48 @@ class LSCheckbox {
     }
 }
 
+class LSValue {
+    constructor(keyName, defaultValue) {
+        this.keyName = keyName;
+        this.defaultValue = defaultValue;
+        this.value = null
+        this.load()
+    }
+
+    load() {
+        this.value = window.localStorage.getItem(this.keyName);
+        if( null == window.localStorage.getItem(this.keyName) ) {
+            this.value = this.defaultValue;
+        }
+    }
+
+    save() {
+        window.localStorage.setItem(this.keyName, this.value);
+    }
+
+    remove() {
+        window.localStorage.removeItem(this.keyName)
+        this.value = null
+    }
+
+    getValue() {
+        if( null == this.value ) {
+            this.load()
+        }
+        return this.value
+    }
+
+    getEval() {
+        return eval(this.getValue())
+    }
+
+    setValue(value) {
+        this.value = value
+        this.save()
+    }
+
+}
+
 function shuffle(array) {
     var j, x, i;
     for (i = array.length; i; i -= 1) {
@@ -35,4 +77,8 @@ function shuffle(array) {
         array[i - 1] = array[j];
         array[j] = x;
     }
+}
+
+function log(msg) {
+    console.log(msg)
 }

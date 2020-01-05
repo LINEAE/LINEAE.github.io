@@ -21,6 +21,10 @@
     margin-bottom:20px;
 }
 
+#progress_random {
+  width : 480px;
+}
+
 .guide {
     margin-top:8px;
     margin-bottom:8px;
@@ -32,7 +36,6 @@ input[type=checkbox] {
     width:30px;
     height:30px;
 }
-
 
 
 button {
@@ -63,9 +66,6 @@ button.play_button {
     bottom: 20px;
     width: 100%;
 }
-
-
-
 
 
 .slidecontainer {
