@@ -13,6 +13,7 @@ class LSCheckbox {
     load() {
         if( null == window.localStorage.getItem(this.keyName) ) {
             this.checkbox.checked = this.defaultValue;
+            this.save()
         } else {
             this.checkbox.checked = window.localStorage.getItem(this.keyName) == "true";
         }
