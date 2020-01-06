@@ -42,7 +42,7 @@ class VocaTrainer {
 
         this.slotSetting = [firstSlotSize]
         for( var i = 0; i < 4; i++ ) {
-            this.slotSetting.push(this.slotSetting[this.slotSetting.length-1] * 2)
+            this.slotSetting.push(Math.ceil(this.slotSetting[this.slotSetting.length-1] * 2.1))
         }
     
         if( this.slotData.length != this.slotSetting.length ) {
@@ -84,8 +84,21 @@ class VocaTrainer {
         }
 
         if( this.slotData[this.slotIndex].length == 0 ) {
-            log("change slot : " + this.slotIndex + " -> 0")
-            this.slotIndex = 0
+            if( this.srcIndex >= this.srcData.length ) {
+                this.slotIndex = 0
+                while(this.slotData[this.slotIndex].length == 0) {
+                    log("change slot : " + this.slotIndex + " -> " + (this.slotIndex + 1))
+                    this.slotIndex++
+
+                    if( this.slotIndex >= this.slotData.length ) {
+                        alert("Complete!")
+                        return
+                    }
+                }
+            } else {
+                log("change slot : " + this.slotIndex + " -> 0")
+                this.slotIndex = 0
+            }
         }
 
         this.refill();
@@ -124,10 +137,12 @@ class VocaTrainer {
 
     refill() {
         if( this.slotIndex == 0 && this.slotData[0].length == 0 ) {
-            for( var i = 0; i < this.slotSetting[0]; i++ ) {
+            for( var i = 0; i < this.slotSetting[0] && this.srcIndex < this.srcData.length; i++ ) {
                 this.slotData[0].push( this.srcIndex++ )
             }
-            log("refilled")
+            if( this.slotData[0].length > 0 ) {
+                log("refilled")
+            }
         }
     }
 
@@ -208,6 +223,11 @@ function quiz() {
     clear()
 
     voca = vocaTrainer.getNext()
+    if( null == voca ) {
+        log("Complete")
+        return
+    }
+
     div_status.innerText = vocaTrainer.status()
 
     if( lsCheckKrToEn.checked() ) {
@@ -248,4 +268,28 @@ function onclickCheckbox() {
     lsCheckKrToEn.save();
     lsCheckPlaySound.save();
     nextCount = 0
+}
+
+
+var intervalId = null
+function test() {
+    stop()
+    intervalId = setInterval(autoQuiz, 1)
+}
+
+var answerRate = 0.9;
+function autoQuiz() {
+    quiz()
+    if( Math.random() <= answerRate ) {
+        vocaTrainer.remembered()
+    } else {
+        vocaTrainer.forgot()
+    }
+}
+
+function stop() {
+    if( null != intervalId ) {
+        clearInterval(intervalId)
+        intervalId = null
+    }
 }
