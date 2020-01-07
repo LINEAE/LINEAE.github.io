@@ -1,3 +1,7 @@
+var FIRST_SLOT_SIZE = 30
+var NEXT_SLOT_COUNT = 4
+var NEXT_SLOT_MAGNIFICATION = 2.1
+
 class Voca {
     constructor(eng, kor, pronounce, audioKey) {
         this.eng = eng;
@@ -34,15 +38,15 @@ const vocas = [];
 })()
 
 class VocaTrainer {
-    constructor(srcData, firstSlotSize) {
+    constructor(srcData, firstSlotSize, nextSlotCount, magnification) {
         this.srcData = srcData;
         this.srcIndex = lsVarSrcIndex.getEval();
         this.slotData = lsVarSlotData.getEval();
         this.slotIndex = lsVarSlotIndex.getEval();
 
         this.slotSetting = [firstSlotSize]
-        for( var i = 0; i < 4; i++ ) {
-            this.slotSetting.push(Math.ceil(this.slotSetting[this.slotSetting.length-1] * 2.1))
+        for( var i = 0; i < nextSlotCount; i++ ) {
+            this.slotSetting.push(Math.ceil(this.slotSetting[this.slotSetting.length-1] * magnification))
         }
     
         if( this.slotData.length != this.slotSetting.length ) {
@@ -77,8 +81,7 @@ class VocaTrainer {
     getNext() {
         for(var i = 0; i < this.slotData.length; i++ ) {
             if( this.slotData[i].length >= this.slotSetting[i] ) {
-                log("change slot : " + this.slotIndex + " -> " + i)
-                this.slotIndex = i;
+                this.changeSlot(i)
                 break;
             }
         }
@@ -87,17 +90,15 @@ class VocaTrainer {
             if( this.srcIndex >= this.srcData.length ) {
                 this.slotIndex = 0
                 while(this.slotData[this.slotIndex].length == 0) {
-                    log("change slot : " + this.slotIndex + " -> " + (this.slotIndex + 1))
-                    this.slotIndex++
-
-                    if( this.slotIndex >= this.slotData.length ) {
+                    if( this.slotIndex + 1 >= this.slotData.length ) {
                         alert("Complete!")
                         return
                     }
+
+                    this.changeSlot(this.slotIndex + 1)
                 }
             } else {
-                log("change slot : " + this.slotIndex + " -> 0")
-                this.slotIndex = 0
+                this.changeSlot(0)
             }
         }
 
@@ -137,12 +138,21 @@ class VocaTrainer {
 
     refill() {
         if( this.slotIndex == 0 && this.slotData[0].length == 0 ) {
-            for( var i = 0; i < this.slotSetting[0] && this.srcIndex < this.srcData.length; i++ ) {
+            while( this.slotData[0].length < this.slotSetting[0] && this.srcIndex < this.srcData.length ) {
                 this.slotData[0].push( this.srcIndex++ )
             }
             if( this.slotData[0].length > 0 ) {
                 log("refilled")
+                this.needRefillFirstSlot = false
             }
+        }
+    }
+
+    changeSlot(toIndex) {
+        if( this.slotIndex != toIndex ) {
+            log("change slot : " + this.slotIndex + " -> " + toIndex)
+            this.slotIndex = toIndex
+            shuffle(this.slotData[this.slotIndex])
         }
     }
 
@@ -176,8 +186,6 @@ var vocaTrainer = null
 var voca = null
 var currentIndex = null
 
-var FIRST_SLOT_SIZE = 30
-
 function onLoadBody() {
     lsCheckKrToEn = new LSCheckbox(checkbox_kr_to_en, "voca_training_kr_to_en", true)
     lsCheckPlaySound = new LSCheckbox(checkbox_play_sound, "voca_training_play_sound", false)
@@ -186,7 +194,7 @@ function onLoadBody() {
     lsVarSlotData = new LSValue("voca_training_slot_data", "[]")
     lsVarSlotIndex = new LSValue("voca_training_slot_index", "0")
 
-    vocaTrainer = new VocaTrainer(vocas, FIRST_SLOT_SIZE)
+    vocaTrainer = new VocaTrainer(vocas, FIRST_SLOT_SIZE, NEXT_SLOT_COUNT, NEXT_SLOT_MAGNIFICATION)
     vocaTrainer.init(div_slot_container)
 
     btn_answer.style.display = "none"
@@ -274,7 +282,7 @@ function onclickCheckbox() {
 var intervalId = null
 function test() {
     stop()
-    intervalId = setInterval(autoQuiz, 1)
+    intervalId = setInterval(autoQuiz, 10)
 }
 
 var answerRate = 0.9;

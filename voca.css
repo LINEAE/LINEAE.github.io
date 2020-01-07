@@ -78,14 +78,16 @@ button.play_button {
 
 button.full_size {
   width:96%;
-  height:50px;
+  height: 80px;
+  font-size: 22px;
   margin-left: 0px;
   margin-right: 0px;
 }
 
 button.half_size {
   width:48%;
-  height:50px;
+  height: 80px;
+  font-size: 22px;
   margin-left: 0px;
   margin-right: 0px;
 }
