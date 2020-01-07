@@ -44,7 +44,7 @@ function pickArticle() {
 
 function drawArticle(index) {
     var img = document.getElementById("article-image");
-    img.src = "res/imageArticle/" + index + ".jpg";
+    img.src = "res/imageArticleResized/" + index + ".jpg";
 }
 
 function writeArticle(description) {
