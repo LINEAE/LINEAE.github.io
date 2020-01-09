@@ -167,7 +167,7 @@ var vocaDatas =
 ["deception","속임수, 기만","[disépʃən]","4F7124FF0209EF0195"],
 ["intercept","가로채다","[ìntərsépt]","4F712D6D033AEF0307"],
 ["recipe","조리법","[résəpi]","4F71163006707C00FF"],
-["aniticipate","예상하다, 기대하다","[æntísəpèit]","4F712AF404308F0298"],
+["anticipate","예상하다, 기대하다","[æntísəpèit]","4F712AF404308F0298"],
 ["disciple","제자, 문하생","[disáipl]","4F7125D2055E8E021A"],
 ["discipline","훈련, 훈육, 규율, 학과목","[dísəplin]","4F7125D3055EEF0205"],
 ["precipitate","재촉하다, 촉진시키다","[prisípitèit]","4F7114D301264100B7"],

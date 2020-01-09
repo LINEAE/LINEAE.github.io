@@ -21,6 +21,11 @@
     margin-bottom:20px;
 }
 
+a.voca_eng {
+  text-decoration: none;
+  color: black;
+}
+
 progress {
   display:block;
 }

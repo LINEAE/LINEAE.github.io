@@ -11,7 +11,7 @@ class Voca {
     }
 
     engHtml(withAudio) {
-        var result = this.eng
+        var result = "<a class='voca_eng' href='https://dictionary.cambridge.org/dictionary/english/" + this.eng + "' target='_voca_dic'>" + this.eng + "</a>"
 
         if( this.pronounce ) {
             result += "<br>" + this.pronounce

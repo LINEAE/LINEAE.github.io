@@ -6,14 +6,14 @@ class Voca {
         this.audioKey = audioKey
     }
 
-    engHtml() {
-        var result = this.eng
+    engHtml(withAudio) {
+        var result = "<a class='voca_eng' href='https://dictionary.cambridge.org/dictionary/english/" + this.eng + "' target='_voca_dic'>" + this.eng + "</a>"
 
-        if( this.pronounce ) {
+        if (this.pronounce) {
             result += "<br>" + this.pronounce
         }
 
-        if( this.audioKey ) {
+        if (withAudio && this.audioKey) {
             result += "<br> <audio controls autoplay id='pronounce' src='" + this.audioUrl() + "'>가능?</audio>"
         }
 
@@ -39,28 +39,35 @@ var vocaGroupSize = 50
 
 function onLoadBody() {
     lsCheckVocaKrToEn = new LSCheckbox(checkbox_kr_to_en, "voca_kr_to_en", true)
-    lsCheckVocaRandom = new LSCheckbox(checkbox_random, "vocal_random", false)
+    lsCheckVocaRandom = new LSCheckbox(checkbox_random, "voca_random", false)
+    lsCheckVocaPlaySound = new LSCheckbox(checkbox_play_sound, "voca_play_sound", true)
+    lsFromIndex = new LSValue("voca_group_from_index", 1)
+    lsToIndex = new LSValue("voca_group_to_index", 1)
     loadVocaStatus();
 
     span_from.innerText = slider_from.value
     span_to.innerText = slider_to.value * vocaGroupSize
     span_current.innerText = slider_current.value
 
-    slider_from.oninput = function() {
+    slider_from.oninput = function () {
         span_from.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
-        if( new Number(slider_from.value) > new Number(slider_to.value) ) {
+        if (new Number(slider_from.value) > new Number(slider_to.value)) {
             slider_to.value = this.value
             span_to.innerText = this.value * vocaGroupSize
+            lsToIndex.setValue(this.value)
         }
+        lsFromIndex.setValue(this.value)
     }
-    slider_to.oninput = function() {
+    slider_to.oninput = function () {
         span_to.innerText = this.value * vocaGroupSize
-        if( new Number(slider_to.value) < new Number(slider_from.value) ) {
+        if (new Number(slider_to.value) < new Number(slider_from.value)) {
             slider_from.value = this.value
             span_from.innerText = (this.value * vocaGroupSize - vocaGroupSize + 1)
+            lsFromIndex.setValue(this.value)
         }
+        lsToIndex.setValue(this.value)
     }
-    slider_current.oninput = function() {
+    slider_current.oninput = function () {
         span_current.innerText = this.value
         currentIndex = new Number(this.value)
     }
@@ -69,32 +76,35 @@ function onLoadBody() {
     slider_to.max = Math.floor(vocas.length / vocaGroupSize)
     slider_current.max = vocas.length
 
-    slider_to.value = 1
+    slider_from.value = lsFromIndex.getEval()
+    slider_from.oninput()
+    slider_to.value = lsToIndex.getEval()
+    slider_to.oninput()
 }
 
 
 var nextCount = 0
 function next() {
-    if( nextCount++ %2 == 0 ) { quiz() } else { answer() }
+    if (nextCount++ % 2 == 0) { quiz() } else { answer() }
 }
 function audioPlay() {
     pronounce.play()
 }
 
 function clear() {
-    div_question.innerText=""
-    div_answer.innerText=""
-    div_status.innerText=""
+    div_question.innerText = ""
+    div_answer.innerText = ""
+    div_status.innerText = ""
 }
 
 
 var currentIndex = null
 function getNextVoca() {
-    if( isNaN(currentIndex) ) {
+    if (isNaN(currentIndex)) {
         currentIndex = -1;
     }
 
-    if( currentIndex < new Number(span_from.innerText) - 1 || currentIndex >= new Number(span_to.innerText) - 1 ) {
+    if (currentIndex < new Number(span_from.innerText) - 1 || currentIndex >= new Number(span_to.innerText) - 1) {
         currentIndex = new Number(span_from.innerText) - 1
     } else {
         currentIndex++
@@ -103,7 +113,7 @@ function getNextVoca() {
     slider_current.value = (new Number(currentIndex) + 1)
     span_current.innerText = (new Number(currentIndex) + 1)
 
-	saveVocaStatus()
+    saveVocaStatus()
     return vocas[currentIndex];
 }
 
@@ -111,24 +121,17 @@ var randomStartIndex = 0
 var randomEndIndex = 0
 var randomQuizSlot = []
 function getRandomVoca() {
-    var currentRandomStartIndex = span_from.innerText
-    var currentRandomEndIndex = span_to.innerText
-    if( randomStartIndex == currentRandomStartIndex && randomEndIndex == currentRandomEndIndex ) {
-        if( randomQuizSlot.length == 0 ) {
-            for( var i = randomStartIndex; i <= randomEndIndex; i++ ) {
-                randomQuizSlot.push(eval(i))
-            }
-            shuffle(randomQuizSlot)
+    var currentRandomStartIndex = eval(span_from.innerText)
+    var currentRandomEndIndex = eval(span_to.innerText)
+    if (randomStartIndex == currentRandomStartIndex && randomEndIndex == currentRandomEndIndex) {
+        if (randomQuizSlot.length == 0) {
+            refill()
         }
     } else {
         randomStartIndex = currentRandomStartIndex
         randomEndIndex = currentRandomEndIndex
 
-        randomQuizSlot = []
-        for( var i = randomStartIndex; i <= randomEndIndex; i++ ) {
-            randomQuizSlot.push(eval(i))
-        }
-        shuffle(randomQuizSlot)
+        refill()
     }
 
     var randomIndex = randomQuizSlot.pop()
@@ -138,10 +141,19 @@ function getRandomVoca() {
     return vocas[randomIndex]
 }
 
+function refill() {
+    randomQuizSlot = []
+    for (var i = randomStartIndex; i <= randomEndIndex; i++) {
+        randomQuizSlot.push(eval(i))
+    }
+    shuffle(randomQuizSlot)
+    log("Random slot refilled " + randomQuizSlot)
+}
+
 function quiz() {
     clear()
 
-    if( lsCheckVocaRandom.checked() ) {
+    if (lsCheckVocaRandom.checked()) {
         voca = getRandomVoca()
         div_status.innerText = "Random: " + randomStartIndex + "~" + randomEndIndex + ", remains:" + (randomQuizSlot.length)
     } else {
@@ -149,24 +161,24 @@ function quiz() {
         div_status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (vocas.length)
     }
 
-    if( lsCheckVocaKrToEn.checked() ) {
+    if (lsCheckVocaKrToEn.checked()) {
         div_question.innerText = voca.kor
     } else {
-        div_question.innerHTML = voca.engHtml()
+        div_question.innerHTML = voca.engHtml(lsCheckVocaPlaySound.checked())
     }
 }
 
 function answer() {
-    if( checkbox_kr_to_en.checked ) {
-        div_answer.innerHTML = voca.engHtml()
+    if (checkbox_kr_to_en.checked) {
+        div_answer.innerHTML = voca.engHtml(lsCheckVocaPlaySound.checked())
     } else {
         div_answer.innerText = voca.kor
     }
 }
 
 function loadVocaStatus() {
-	currentIndex = eval(window.localStorage.getItem("currentIndex"))
-	if( null == currentIndex ) { currentIndex = 0; }
+    currentIndex = eval(window.localStorage.getItem("currentIndex"))
+    if (null == currentIndex) { currentIndex = 0; }
 }
 
 function saveVocaStatus() {
@@ -176,5 +188,6 @@ function saveVocaStatus() {
 function onclickCheckbox() {
     lsCheckVocaKrToEn.save();
     lsCheckVocaRandom.save();
+    lsCheckVocaPlaySound.save();
     nextCount = 0
 }
