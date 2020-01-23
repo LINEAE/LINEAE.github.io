@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>HTML DOM Tree</title>
+  <meta name="description" content="Interactive diagram showing the structure of the HTML DOM of this HTML page, allowing collapsing/expanding of subtrees." />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+
+  <script src="go.js"></script>
+  <script id="code">
+    var names = {}; // hash to keep track of what names have been used
+    function init() {
+      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+      var $ = go.GraphObject.make;  // for conciseness in defining templates
+      myDiagram =
+        $(go.Diagram, "myDiagramDiv",
+          {
+            initialAutoScale: go.Diagram.UniformToFill,
+            // define the layout for the diagram
+            layout: $(go.TreeLayout, { nodeSpacing: 5, layerSpacing: 50 })
+          });
+      // Define a simple node template consisting of text followed by an expand/collapse button
+      myDiagram.nodeTemplate =
+        $(go.Node, "Horizontal",
+          { selectionChanged: nodeSelectionChanged },  // this event handler is defined below
+          $(go.Panel, "Auto",
+            $(go.Shape, { fill: "#1F4963", stroke: null }),
+            $(go.TextBlock,
+              {
+                font: "bold 13px Helvetica, bold Arial, sans-serif",
+                stroke: "white", margin: 5
+              },
+              new go.Binding("text", "key"))
+          ),
+          $("TreeExpanderButton")
+        );
+      // Define a trivial link template with no arrowhead.
+      myDiagram.linkTemplate =
+        $(go.Link,
+          { selectable: false },
+          $(go.Shape,));  // the link shape
+      // create the model for the DOM tree
+      myDiagram.model =
+        $(go.TreeModel, {
+          isReadOnly: true,  // don't allow the user to delete or copy nodes
+          // build up the tree in an Array of node data
+          nodeDataArray: traverseDom(document.activeElement)
+        });
+    }
+    // Walk the DOM, starting at document, and return an Array of node data objects representing the DOM tree
+    // Typical usage: traverseDom(document.activeElement)
+    // The second and third arguments are internal, used when recursing through the DOM
+    function traverseDom(node, parentName, dataArray) {
+      return [
+      { key: "마음동사" },
+      { key: "부담", parent: "마음동사" },
+      { key: "have to", parent: "부담" },
+      { key: "need to", parent: "부담" },
+      { key: "의지", parent: "마음동사" },
+      { key: "wish to\nhope to\ndesire to", parent: "의지" },
+      { key: "want to\nwould like to\nlove to", parent: "의지" },
+      { key: "능력\n가능성", parent: "마음동사" },
+      { key: "try to\nstruggle to", parent: "능력\n가능성" },
+      { key: "decide to\ndetermind to", parent: "능력\n가능성" },
+      { key: "vow to", parent: "능력\n가능성" },
+      
+      { key: "수여동사" },
+      { key: "주->수여동사->주는물건->to->받는사람", parent:"수여동사"},
+      { key: "준다라는 개념이 들어 갈때\n물건과 사람을 바꿀수 있다", parent:"수여동사"},
+      { key: "주->수여동사->to->받는사람->주는물건", parent:"수여동사"},
+      { key: "give", parent:"수여동사"},
+      { key: "offer", parent:"수여동사"},
+      { key: "promiss", parent:"수여동사"},
+      { key: "wish", parent:"수여동사"},
+      { key: "tell", parent:"수여동사"},
+      { key: "pass", parent:"수여동사"},
+      { key: "lend", parent:"수여동사"},
+      { key: "pay", parent:"수여동사"},
+      { key: "show", parent:"수여동사"},
+      { key: "buy", parent:"수여동사"},
+      { key: "name", parent:"수여동사"},
+      { key: "cook", parent:"수여동사"},
+
+      { key: "조동사" },
+      { key: "*부담", parent: "조동사" },
+      { key: "must == have to", parent: "*부담" },
+      { key: "ought to", parent: "*부담" },
+      { key: "should", parent: "*부담" },
+      { key: "*의지", parent: "조동사" },
+      { key: "shall", parent: "*의지" },
+      { key: "will", parent: "*의지" },
+      { key: "would", parent: "*의지" },
+      { key: "*능력\n가능성", parent: "조동사" },
+      { key: "can", parent: "*능력\n가능성" },
+      { key: "could", parent: "*능력\n가능성" },
+      { key: "may", parent: "*능력\n가능성" },
+      { key: "might", parent: "*능력\n가능성" },
+
+   { key: "동사" },
+   { key: "힘을\n가하는\n동작", parent: "동사" },
+   { key: "do", parent: "힘을\n가하는\n동작" },
+   { key: "take", parent: "힘을\n가하는\n동작" },
+   { key: "hold\n지속", parent: "take" },
+   { key: "have\n소유", parent: "take" },
+   { key: "catch\n갑자기잡을떄", parent: "take" },
+   { key: "get\n시간과노력", parent: "take" },
+   { key: "cut", parent: "힘을\n가하는\n동작" },
+   { key: "strike", parent: "힘을\n가하는\n동작" },
+   { key: "make", parent: "힘을\n가하는\n동작" },
+   { key: "cover", parent: "힘을\n가하는\n동작" },
+   { key: "put", parent: "힘을\n가하는\n동작" },
+   { key: "set\n정확히둘떄", parent: "put" },
+   { key: "carry", parent: "힘을\n가하는\n동작" },
+   { key: "bring", parent: "힘을\n가하는\n동작" },
+   { key: "hold", parent: "힘을\n가하는\n동작" },
+   { key: "give", parent: "힘을\n가하는\n동작" },
+   { key: "have", parent: "힘을\n가하는\n동작" },
+   { key: "raise", parent: "힘을\n가하는\n동작" },
+   { key: "push up", parent: "raise" },
+   { key: "put up", parent: "raise" },
+   { key: "lower", parent: "힘을\n가하는\n동작" },
+   { key: "push down", parent: "lower" },
+   { key: "put down", parent: "lower" },
+   { key: "turn", parent: "힘을\n가하는\n동작" },
+   { key: "push around", parent: "turn" },
+   { key: "push", parent: "힘을\n가하는\n동작" },
+   { key: "pull", parent: "힘을\n가하는\n동작" },
+   { key: "throw", parent: "힘을\n가하는\n동작" },
+   { key: "cast\n가볍게던질떄", parent: "throw" },
+   { key: "drop", parent: "힘을\n가하는\n동작" },
+   { key: "break", parent: "힘을\n가하는\n동작" },
+   { key: "call", parent: "힘을\n가하는\n동작" },
+   { key: "open", parent: "힘을\n가하는\n동작" },
+   { key: "fill", parent: "힘을\n가하는\n동작" },
+   { key: "close", parent: "힘을\n가하는\n동작" },
+   { key: "look", parent: "힘을\n가하는\n동작" },
+   { key: "let", parent: "힘을\n가하는\n동작" },
+   { key: "touch", parent: "힘을\n가하는\n동작" },
+   { key: "스스로\n하는\n동작", parent: "동사" },
+   { key: "be", parent: "스스로\n하는\n동작" },
+   { key: "sit", parent: "스스로\n하는\n동작" },
+   { key: "lie=be on(누워있다)", parent: "sit" },
+   { key: "stand", parent: "스스로\n하는\n동작" },
+   { key: "go", parent: "스스로\n하는\n동작" },
+   { key: "walk", parent: "go" },
+   { key: "run", parent: "스스로\n하는\n동작" },
+   { key: "rise", parent: "스스로\n하는\n동작" },
+   { key: "fall", parent: "스스로\n하는\n동작" },
+   { key: "turn", parent: "스스로\n하는\n동작" },
+   { key: "come", parent: "스스로\n하는\n동작" },
+ ];
+    }
+    // Give every node a unique name
+    function getName(node) {
+      var n = node.nodeName;
+      if (node.id) n = n + " (" + node.id + ")";
+      var namenum = n;  // make sure the name is unique
+      var i = 1;
+      while (names[namenum] !== undefined) {
+        namenum = n + i;
+        i++;
+      }
+      names[namenum] = node;
+      return namenum;
+    }
+    // When a Node is selected, highlight the corresponding HTML element.
+    function nodeSelectionChanged(node) {
+      if (node.isSelected) {
+        names[node.data.name].style.backgroundColor = "lightblue";
+      } else {
+        names[node.data.name].style.backgroundColor = "";
+      }
+    }
+  </script>
+  <style>
+    html, body {
+        height: 100%;
+        margin: 0px;
+    }
+  </style>
+</head>
+<body onload="init()">
+  <div id="myDiagramDiv" style="border: 1px solid black; width:100%; height:100%; position:relative"></div>
+</body>
+</html>
