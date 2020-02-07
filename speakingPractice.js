@@ -1,10 +1,4 @@
 
-var subject = null
-var useBe = false
-var tense = null
-var positive = true
-var ask = false
-
 var see = new Verb("see", "saw", "seen", "seeing", "보다", "")
 var movie = "the movie";
 
@@ -21,12 +15,177 @@ function getTeacher(plural) {
     }
 }
 
+class Sentence{
+    constructor(subject,useBe,tense,positive,ask) {
+        this.subject = subject;
+        this.useBe = useBe;
+        this.tense = tense;
+        this.positive = positive;
+        this.ask = ask;
+    }
+}
+var items = [];
+(function () {
+    var index = 0;
+    for (var i = 0; i < subjects.length; i++) {
+        var s = subjects[i];
+        for(var j = 0; j < 2; j++) {
+            var u = j == 0;
+            for(var k = 0; k < tenses.length;k++) {
+                var t = tenses[k];
+                if(u && t.progressive) {
+                    continue;
+                }
+                for(var l = 0; l < 2; l++) {
+                    var p = l == 0;
+                    for(var m = 0; m < 2; m++) {
+                        var a = m == 1;
+                        items[index] = new Sentence(s,u,t,p,a);
+                        index++;
+                    }
+                }
+
+            }
+
+        }
+       
+    }
+})()
+
+var item = null
+
+var groupSize = 50
+
+
+function onLoadBody() {
+    drawBackground();
+    lsCheckVocaKrToEn = new LSCheckbox(checkbox_kr_to_en, "voca_kr_to_en", true)
+    lsCheckVocaRandom = new LSCheckbox(checkbox_random, "voca_random", false)
+    lsCheckVocaPlaySound = new LSCheckbox(checkbox_play_sound, "voca_play_sound", true)
+    lsFromIndex = new LSValue("voca_group_from_index", 1)
+    lsToIndex = new LSValue("voca_group_to_index", 1)
+    loadStatus();
+
+    span_from.innerText = slider_from.value
+    span_to.innerText = slider_to.value * groupSize
+    span_current.innerText = slider_current.value
+
+    slider_from.oninput = function () {
+        span_from.innerText = (this.value * groupSize - groupSize + 1)
+        if (new Number(slider_from.value) > new Number(slider_to.value)) {
+            slider_to.value = this.value
+            span_to.innerText = this.value * groupSize
+            lsToIndex.setValue(this.value)
+        }
+        lsFromIndex.setValue(this.value)
+    }
+    slider_to.oninput = function () {
+        span_to.innerText = this.value * groupSize
+        if (new Number(slider_to.value) < new Number(slider_from.value)) {
+            slider_from.value = this.value
+            span_from.innerText = (this.value * groupSize - groupSize + 1)
+            lsFromIndex.setValue(this.value)
+        }
+        lsToIndex.setValue(this.value)
+    }
+    slider_current.oninput = function () {
+        span_current.innerText = this.value
+        currentIndex = new Number(this.value)
+    }
+
+    slider_from.max = items.length / groupSize
+    slider_to.max = Math.floor(items.length / groupSize)
+    slider_current.max = items.length
+
+    slider_from.value = lsFromIndex.getEval()
+    slider_from.oninput()
+    slider_to.value = lsToIndex.getEval()
+    slider_to.oninput()
+}
+
+var currentIndex = null
+function getNext() {
+    if (isNaN(currentIndex)) {
+        currentIndex = -1;
+    }
+
+    if (currentIndex < new Number(span_from.innerText) - 1 || currentIndex >= new Number(span_to.innerText) - 1) {
+        currentIndex = new Number(span_from.innerText) - 1
+    } else {
+        currentIndex++
+    }
+
+    slider_current.value = (new Number(currentIndex) + 1)
+    span_current.innerText = (new Number(currentIndex) + 1)
+
+    saveStatus()
+    return items[currentIndex];
+}
+
+var randomStartIndex = 0
+var randomEndIndex = 0
+var randomQuizSlot = []
+function getRandom() {
+    var currentRandomStartIndex = eval(span_from.innerText)
+    var currentRandomEndIndex = eval(span_to.innerText)
+    if (randomStartIndex == currentRandomStartIndex && randomEndIndex == currentRandomEndIndex) {
+        if (randomQuizSlot.length == 0) {
+            refill()
+        }
+    } else {
+        randomStartIndex = currentRandomStartIndex
+        randomEndIndex = currentRandomEndIndex
+
+        refill()
+    }
+
+    var randomIndex = randomQuizSlot.pop()
+    slider_current.value = (new Number(randomIndex) + 1)
+    span_current.innerText = (new Number(randomIndex) + 1)
+
+    return items[randomIndex]
+}
+
+function refill() {
+    randomQuizSlot = []
+    for (var i = randomStartIndex; i <= randomEndIndex; i++) {
+        randomQuizSlot.push(eval(i))
+    }
+    shuffle(randomQuizSlot)
+    log("Random slot refilled " + randomQuizSlot)
+}
+
+function loadStatus() {
+    currentIndex = eval(window.localStorage.getItem("currentIndex_adjective"))
+    if (null == currentIndex) { currentIndex = 0; }
+}
+
+function saveStatus() {
+    window.localStorage.setItem("currentIndex_adjective", currentIndex);
+}
+
+function onclickCheckbox() {
+    lsCheckVocaKrToEn.save();
+    lsCheckVocaRandom.save();
+    lsCheckVocaPlaySound.save();
+    nextCount = 0
+}
+
 function quiz() {
-    subject = pickSubject();
-    useBe = pickUseBe()
-    tense = pickTense();
-    positive = pickPositive();
-    ask = pickAsk();
+
+    if (lsCheckVocaRandom.checked()) {
+        item = getRandom()
+        div_status.innerText = "Random: " + randomStartIndex + "~" + randomEndIndex + ", remains:" + (randomQuizSlot.length)
+    } else {
+        item = getNext()
+        div_status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (items.length)
+    }
+
+    subject = item.subject
+    useBe = item.useBe
+    tense = item.tense
+    positive = item.positive
+    ask = item.ask
 
     console.log(subject+
         "\n" + useBe +
@@ -36,25 +195,10 @@ function quiz() {
         "\n" + getResult(subject,useBe,tense,positive, ask))
     drawTense(tense.tense,tense.progressive, tense.perfect);
     drawQuiz(subject, useBe, positive, ask);
-
-    var player = document.getElementById("audio-player")
-    player.removeAttribute("src")
 }
 
 function answer() {
-   drawResultText(subject,useBe,tense, positive, ask);
-}
-
-function playAudio() {
-    var text = getResult(subject,useBe ,tense, positive, ask)
-    var player = document.getElementById("audio-player")
-    
-    if(player.src) {
-        player.play()
-    }else {
-        playSpeechFromText(player, text)
-    }
-
+   drawResultText(item.subject,item.useBe,item.tense, item.positive, item.ask);
 }
 
 var nextCount = 0
@@ -126,67 +270,7 @@ function drawResultText(subject, useBe, tense, positive, ask) {
 }
 
 
-function pickSubject() {
-    var index = getRandomInt(0, subjects.length);
-    return subjects[index];
-}
 
-function pickUseBe() {
-    if(cbTeacher.checked == cbMovie.checked) {
-        return Math.floor(Math.random() * 2) == 0
-    } else {
-        return cbTeacher.checked;
-    }    
-}
-
-function pickTense() {
-    var arTense = []
-    if(cbPresent.checked == false && cbPast.checked == false && cbFuture.checked == false) {
-        arTense.push(TenseEnum.present)
-        arTense.push(TenseEnum.past)
-        arTense.push(TenseEnum.future)
-    }
-    else {
-        if(cbPresent.checked) { arTense.push(TenseEnum.present) }
-        if(cbPast.checked) { arTense.push(TenseEnum.past) }
-        if(cbFuture.checked) { arTense.push(TenseEnum.future) }
-    }
-    shuffle(arTense)
-
-    var progressive = false
-    if(cbProgressive.checked == cbNotProgressive.checked) {
-        progressive = Math.floor(Math.random() * 2) == 0
-    } else {
-        progressive = cbProgressive.checked;
-    }
-
-    var perfect = false
-    if(cbPerfect.checked == cbNotPerfect.checked) {
-        perfect = Math.floor(Math.random() * 2) == 0
-    } else {
-        perfect = cbPerfect.checked;
-    }
-
-    return new Tense(arTense[0], progressive, perfect)
-}
-
-function pickPositive() {
-    var positive = true
-    if(cbPositive.checked == cbNegative.checked) {
-        positive = Math.floor(Math.random() * 2) == 0
-    } else {
-        positive = cbPositive.checked;
-    }    
-    return positive
-}
-
-function pickAsk() {
-    if(cbAsk.checked == cbNoAsk.checked) {
-        return Math.floor(Math.random() * 2) == 0
-    } else {
-        return cbAsk.checked;
-    }    
-}
 
 function getResult(subject, useBe, tense, positive, ask) {
     if(ask) {
@@ -218,127 +302,4 @@ function getResult(subject, useBe, tense, positive, ask) {
     }
 }
 
-function onLoadBody() {
-    drawBackground();
-    loadCheckboxStatus();
-}
 
-window.onload = function() {
-    cbTeacher = document.getElementById("cbTeacher");
-    cbMovie = document.getElementById("cbMovie");
-
-    cbPast = document.getElementById("cbPast");
-    cbPresent = document.getElementById("cbPresent");
-    cbFuture = document.getElementById("cbFuture");
-
-    cbProgressive = document.getElementById("cbProgressive");
-    cbNotProgressive = document.getElementById("cbNotProgressive");
-    cbPerfect = document.getElementById("cbPerfect");
-    cbNotPerfect = document.getElementById("cbNotPerfect");
-
-    cbPositive = document.getElementById("cbPositive");
-    cbNegative = document.getElementById("cbNegative");
-
-    cbAsk = document.getElementById("cbAsk");
-    cbNoAsk = document.getElementById("cbNoAsk");
-}
-
-function onclickCheckbox(event) {
-    saveCheckboxStatus();
-}
-
-function loadCheckboxStatus() {
-    if( null == window.localStorage.getItem("cbTeacher") ) {
-        cbTeacher.checked = true;
-    } else {
-        cbTeacher.checked = window.localStorage.getItem("cbTeacher") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbMovie") ) {
-        cbMovie.checked = true;
-    } else {
-        cbMovie.checked = window.localStorage.getItem("cbMovie") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbPast") ) {
-        cbPast.checked = true;
-    } else {
-        cbPast.checked = window.localStorage.getItem("cbPast") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbPresent") ) {
-        cbPresent.checked = true;
-    } else {
-        cbPresent.checked = window.localStorage.getItem("cbPresent") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbFuture") ) {
-        cbFuture.checked = true;
-    } else {
-        cbFuture.checked = window.localStorage.getItem("cbFuture") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbProgressive") ) {
-        cbProgressive.checked = true;
-    } else {
-        cbProgressive.checked = window.localStorage.getItem("cbProgressive") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbNotProgressive") ) {
-        cbNotProgressive.checked = true;
-    } else {
-        cbNotProgressive.checked = window.localStorage.getItem("cbNotProgressive") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbPerfect") ) {
-        cbPerfect.checked = true;
-    } else {
-        cbPerfect.checked = window.localStorage.getItem("cbPerfect") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbNotPerfect") ) {
-        cbNotPerfect.checked = true;
-    } else {
-        cbNotPerfect.checked = window.localStorage.getItem("cbNotPerfect") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbPositive") ) {
-        cbPositive.checked = true;
-    } else {
-        cbPositive.checked = window.localStorage.getItem("cbPositive") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbNegative") ) {
-        cbNegative.checked = true;
-    } else {
-        cbNegative.checked = window.localStorage.getItem("cbNegative") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbAsk") ) {
-        cbAsk.checked = true;
-    } else {
-        cbAsk.checked = window.localStorage.getItem("cbAsk") == "true";
-    }
-
-    if( null == window.localStorage.getItem("cbNoAsk") ) {
-        cbNoAsk.checked = true;
-    } else {
-        cbNoAsk.checked = window.localStorage.getItem("cbNoAsk") == "true";
-    }
-}
-
-function saveCheckboxStatus() {
-    window.localStorage.setItem("cbTeacher", cbTeacher.checked);
-    window.localStorage.setItem("cbMovie", cbMovie.checked);
-    window.localStorage.setItem("cbPast", cbPast.checked);
-    window.localStorage.setItem("cbPresent", cbPresent.checked);
-    window.localStorage.setItem("cbFuture", cbFuture.checked);
-    window.localStorage.setItem("cbProgressive", cbProgressive.checked);
-    window.localStorage.setItem("cbNotProgressive", cbNotProgressive.checked);
-    window.localStorage.setItem("cbPerfect", cbPerfect.checked);
-    window.localStorage.setItem("cbNotPerfect", cbNotPerfect.checked);
-    window.localStorage.setItem("cbPositive", cbPositive.checked);
-    window.localStorage.setItem("cbNegative", cbNegative.checked);
-    window.localStorage.setItem("cbAsk", cbAsk.checked);
-    window.localStorage.setItem("cbNoAsk", cbNoAsk.checked);
-}

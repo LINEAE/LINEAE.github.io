@@ -3,6 +3,14 @@
     text-align:center;
 }
 
+#stage_canvas {
+    background: #2D4138;
+    width: 480px;
+    height: 320px;
+    position: relative;
+    border: 2px solid black;
+}
+
 #div_question {
     margin-top:4px;
     margin-bottom:12px;
@@ -153,4 +161,21 @@ button.half_size {
   height: 25px; /* Slider handle height */
   background: #4CAF50; /* Green background */
   cursor: pointer; /* Cursor on hover */
+}
+
+.layer-0 {
+    z-index: 0;
+}
+.layer-1 {
+    z-index: 1;
+}
+.layer-2 {
+    z-index: 2;
+}
+.layer-3 {
+    z-index: 2;
+}
+
+canvas {
+    position: absolute;
 }
