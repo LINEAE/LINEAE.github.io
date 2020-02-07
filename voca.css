@@ -163,6 +163,27 @@ button.half_size {
   cursor: pointer; /* Cursor on hover */
 }
 
+.article-image-tense-overlay {
+    display:block;
+    position:absolute;
+    top: 250px;
+    margin-left: 10px;
+}
+
+#article-image {
+    position: absolute;
+    display: block;
+    margin-top:2px;
+    margin-left: 70px;
+    margin-right: auto;
+    width: 66%;
+}
+#article-text-description {
+    font-size: 25px;
+    margin-top:10px;
+    width: 100%;
+    color:black
+}
 .layer-0 {
     z-index: 0;
 }
