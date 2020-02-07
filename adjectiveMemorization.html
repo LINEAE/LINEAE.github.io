@@ -4,32 +4,55 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=500, user-scalable=no">
     <title>형용사(상태)</title>
-    <link rel="apple-touch-icon" href="icon-72x72.jpg">
+    <link rel="apple-touch-icon" href="icon-72x72.png">
+    <script src="common.js"></script>
     <script src="data.js"></script>
-    <script src="models.js"></script>
-    <script src="func.js"></script>
-    <script src="display.js"></script>
-    <script src="tts.js"></script>
-    <script src="adjectiveMemorization.js"></script>   
-    <link rel="stylesheet" type="text/css" href="ae.css">
+    <script src="adjectiveMemorization.js"></script>
+    <link rel="stylesheet" type="text/css" href="voca.css">
 </head>
 
 <body onload="onLoadBody();">
 
     <div id="stage">
-        <canvas class="layer-0" id="text-layer" width="480" height="320"></canvas>
-    </div>
+        <div>
+            <div class="guide">Question</div>
+            <div id="div_question">_</div>
+        </div>
 
-    <div>
-        <input id="cbKrToEn" type="checkbox" onclick="onclickCheckbox();">한→영
+        <div>
+            <div class="guide">Answer</div>
+            <div id="div_answer">_</div>
+        </div>
     </div>
 
 
     <div class="footer">
+        <div id="div_status">Status</div>
+
+        <div class="slidecontainer">
+            <span>from : </span>
+            <span id="span_from">from</span>
+            <input id="slider_from" type="range" min="1" max="100" value="0" class="slider">
+        </div>
+        <div class="slidecontainer">
+            <span>to : </span>
+            <span id="span_to">to</span>
+            <input id="slider_to" type="range" min="1" max="100" value="0" class="slider">
+        </div>
+        <div class="slidecontainer">
+            <span>current : </span>
+            <span id="span_current">current</span>
+            <input id="slider_current" type="range" min="1" max="100" value="0" class="slider">
+        </div>
+
+        <div id="options">
+            <input id="checkbox_kr_to_en" type="checkbox" onclick="onclickCheckbox();">한→영
+            <input id="checkbox_random" type="checkbox" onclick="onclickCheckbox();">Random
+            <input id="checkbox_play_sound" type="checkbox" onclick="onclickCheckbox();">Play sound
+        </div>
         <div class="toolbar-item">
             <button class="next_button" name="next" onclick="next();">next</button>
-            <button class="play_button" name="audio_play" onclick="playAudio();">▶</button>
-            <audio id="audio-player" style="display:none" /> 
+            <button class="play_button" name="audio_play" onclick="audioPlay();">🔊</button>
         </div>
     </div>
 

@@ -907,18 +907,3 @@ const articles = [];
     }
 })()
 
-class Adjective {
-    constructor(category, eng, kor) {
-        this.category = category;
-        this.eng = eng;
-        this.kor = kor;
-    }
-}
-
-const adjectives = [];
-(function () {
-    for (var i = 0; i < adjectivesData.length; i++) {
-        var item = adjectivesData[i];
-        adjectives[i] = new Adjective(item[0], item[1], item[2]);
-    }
-})()

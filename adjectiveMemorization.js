@@ -1,119 +1,174 @@
-var adjective = null
+class Adjective {
+    constructor(category, eng, kor) {
+        this.category = category;
+        this.eng = eng;
+        this.kor = kor;
+    }
+}
 
-var canvasWidth = 480;
-var canvasHeight = 320;
+const items = [];
+(function () {
+    for (var i = 0; i < adjectivesData.length; i++) {
+        var item = adjectivesData[i];
+        items[i] = new Adjective(item[0], item[1], item[2]);
+    }
+})()
+
+var item = null
+
+var groupSize = 50
+
+function onLoadBody() {
+    lsCheckVocaKrToEn = new LSCheckbox(checkbox_kr_to_en, "voca_kr_to_en", true)
+    lsCheckVocaRandom = new LSCheckbox(checkbox_random, "voca_random", false)
+    lsCheckVocaPlaySound = new LSCheckbox(checkbox_play_sound, "voca_play_sound", true)
+    lsFromIndex = new LSValue("voca_group_from_index", 1)
+    lsToIndex = new LSValue("voca_group_to_index", 1)
+    loadStatus();
+
+    span_from.innerText = slider_from.value
+    span_to.innerText = slider_to.value * groupSize
+    span_current.innerText = slider_current.value
+
+    slider_from.oninput = function () {
+        span_from.innerText = (this.value * groupSize - groupSize + 1)
+        if (new Number(slider_from.value) > new Number(slider_to.value)) {
+            slider_to.value = this.value
+            span_to.innerText = this.value * groupSize
+            lsToIndex.setValue(this.value)
+        }
+        lsFromIndex.setValue(this.value)
+    }
+    slider_to.oninput = function () {
+        span_to.innerText = this.value * groupSize
+        if (new Number(slider_to.value) < new Number(slider_from.value)) {
+            slider_from.value = this.value
+            span_from.innerText = (this.value * groupSize - groupSize + 1)
+            lsFromIndex.setValue(this.value)
+        }
+        lsToIndex.setValue(this.value)
+    }
+    slider_current.oninput = function () {
+        span_current.innerText = this.value
+        currentIndex = new Number(this.value)
+    }
+
+    slider_from.max = items.length / groupSize
+    slider_to.max = Math.floor(items.length / groupSize)
+    slider_current.max = items.length
+
+    slider_from.value = lsFromIndex.getEval()
+    slider_from.oninput()
+    slider_to.value = lsToIndex.getEval()
+    slider_to.oninput()
+}
+
 
 var nextCount = 0
 function next() {
-    if( nextCount++ %2 == 0 ) {
-        quiz()
-    } else {
-        answer()
+    if (nextCount++ % 2 == 0) { quiz() } else { answer() }
+}
+function audioPlay() {
+    //pronounce.play()
+}
+
+function clear() {
+    div_question.innerText = ""
+    div_answer.innerText = ""
+    div_status.innerText = ""
+}
+
+
+var currentIndex = null
+function getNext() {
+    if (isNaN(currentIndex)) {
+        currentIndex = -1;
     }
+
+    if (currentIndex < new Number(span_from.innerText) - 1 || currentIndex >= new Number(span_to.innerText) - 1) {
+        currentIndex = new Number(span_from.innerText) - 1
+    } else {
+        currentIndex++
+    }
+
+    slider_current.value = (new Number(currentIndex) + 1)
+    span_current.innerText = (new Number(currentIndex) + 1)
+
+    saveStatus()
+    return items[currentIndex];
+}
+
+var randomStartIndex = 0
+var randomEndIndex = 0
+var randomQuizSlot = []
+function getRandom() {
+    var currentRandomStartIndex = eval(span_from.innerText)
+    var currentRandomEndIndex = eval(span_to.innerText)
+    if (randomStartIndex == currentRandomStartIndex && randomEndIndex == currentRandomEndIndex) {
+        if (randomQuizSlot.length == 0) {
+            refill()
+        }
+    } else {
+        randomStartIndex = currentRandomStartIndex
+        randomEndIndex = currentRandomEndIndex
+
+        refill()
+    }
+
+    var randomIndex = randomQuizSlot.pop()
+    slider_current.value = (new Number(randomIndex) + 1)
+    span_current.innerText = (new Number(randomIndex) + 1)
+
+    return items[randomIndex]
+}
+
+function refill() {
+    randomQuizSlot = []
+    for (var i = randomStartIndex; i <= randomEndIndex; i++) {
+        randomQuizSlot.push(eval(i))
+    }
+    shuffle(randomQuizSlot)
+    log("Random slot refilled " + randomQuizSlot)
 }
 
 function quiz() {
-    adjective = pickAdjective()
+    clear()
 
-    drawCategory(adjective);
-    if( cbKrToEn.checked ) {
-        drawResultText(adjective);
+    if (lsCheckVocaRandom.checked()) {
+        item = getRandom()
+        div_status.innerText = "Random: " + randomStartIndex + "~" + randomEndIndex + ", remains:" + (randomQuizSlot.length)
     } else {
-        drawQuizText(adjective);
+        item = getNext()
+        div_status.innerText = "Sequential: " + (new Number(currentIndex) + 1) + "/" + (items.length)
     }
 
-    var player = document.getElementById("audio-player")
-    player.removeAttribute("src")
+    if (lsCheckVocaKrToEn.checked()) {
+        div_question.innerText = item.kor
+    } else {
+        div_question.innerText = item.eng
+    }
 }
 
 function answer() {
-    if( cbKrToEn.checked ) {
-        drawQuizText(adjective);
+    if (checkbox_kr_to_en.checked) {
+        div_answer.innerText = item.eng
     } else {
-        drawResultText(adjective);
+        div_answer.innerText = item.kor
     }
 }
 
-function playAudio() {
-    var text = adjective.eng
-    var player = document.getElementById("audio-player")
-    
-    if(player.src) {
-        player.play()
-    }else {
-        playSpeechFromText(player, text)
-    }
-
+function loadStatus() {
+    currentIndex = eval(window.localStorage.getItem("currentIndex"))
+    if (null == currentIndex) { currentIndex = 0; }
 }
 
-function pickAdjective() {
-    var index = getRandomInt(0, adjectives.length);
-    return adjectives[index];
+function saveStatus() {
+    window.localStorage.setItem("currentIndex", currentIndex);
 }
 
-function drawCategory(adjective) {
-   var canvas = document.getElementById('text-layer');
-    if (!canvas.getContext){
-        return;
-    }
-
-    var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-    ctx.font = '36px serif';
-    ctx.strokeStyle = 'white';
-    ctx.fillStyle = 'white';
-    ctx.fillText(adjective.category, 70, 50, 340);
-}
-
-function drawQuizText(adjective) {
-   var canvas = document.getElementById('text-layer');
-    if (!canvas.getContext){
-        return;
-    }
-
-    var ctx = canvas.getContext('2d');
-
-    ctx.font = '36px serif';
-    ctx.strokeStyle = 'white';
-    ctx.fillStyle = 'white';
-    ctx.fillText(adjective.eng, 70, 150, 340);
-}
-
-function drawResultText(adjective) {
-   var canvas = document.getElementById('text-layer');
-    if (!canvas.getContext){
-        return;
-    }
-
-    var ctx = canvas.getContext('2d');
-    ctx.font = '36px serif';
-    ctx.strokeStyle = 'white';
-    ctx.fillStyle = '#36A1D5';
-    ctx.fillText(adjective.kor, 70, 250 , 340);
-}
-
-
-function onLoadBody() {
-    loadCheckboxStatus();
-}
-
-window.onload = function() {
-    cbKrToEn = document.getElementById("cbKrToEn");
-}
-
-function onclickCheckbox(event) {
-    saveCheckboxStatus();
-}
-
-function loadCheckboxStatus() {
-    if( null == window.localStorage.getItem("cbKrToEn") ) {
-        cbKrToEn.checked = true;
-    } else {
-        cbKrToEn.checked = window.localStorage.getItem("cbKrToEn") == "true";
-    }
-}
-
-function saveCheckboxStatus() {
-    window.localStorage.setItem("cbKrToEn", cbKrToEn.checked);
+function onclickCheckbox() {
+    lsCheckVocaKrToEn.save();
+    lsCheckVocaRandom.save();
+    lsCheckVocaPlaySound.save();
+    nextCount = 0
 }
