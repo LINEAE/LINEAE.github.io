@@ -156,12 +156,12 @@ function refill() {
 }
 
 function loadStatus() {
-    currentIndex = eval(window.localStorage.getItem("currentIndex_adjective"))
+    currentIndex = eval(window.localStorage.getItem("currentIndex_speaking"))
     if (null == currentIndex) { currentIndex = 0; }
 }
 
 function saveStatus() {
-    window.localStorage.setItem("currentIndex_adjective", currentIndex);
+    window.localStorage.setItem("currentIndex_speaking", currentIndex);
 }
 
 function onclickCheckbox() {
