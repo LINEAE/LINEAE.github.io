@@ -166,6 +166,10 @@ function saveStatus() {
     window.localStorage.setItem("currentIndex_speaking", currentIndex);
 }
 
+function audioPlay() {
+    currentIndex = -1
+}
+
 function onclickCheckbox() {
     lsCheckVocaKrToEn.save();
     lsCheckVocaRandom.save();

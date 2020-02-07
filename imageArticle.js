@@ -132,6 +132,10 @@ function refill() {
     log("Random slot refilled " + randomQuizSlot)
 }
 
+function audioPlay() {
+    //pronounce.play()
+    currentIndex = -1
+}
 
 function next() {
     if( nextCount++ %2 == 0 ) {

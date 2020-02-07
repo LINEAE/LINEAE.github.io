@@ -70,6 +70,7 @@ function next() {
 }
 function audioPlay() {
     //pronounce.play()
+    currentIndex = -1
 }
 
 function clear() {
