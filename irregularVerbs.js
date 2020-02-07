@@ -1,18 +1,6 @@
-class Adjective {
-    constructor(category, eng, kor) {
-        this.category = category;
-        this.eng = eng;
-        this.kor = kor;
-    }
-}
 
-const items = [];
-(function () {
-    for (var i = 0; i < adjectivesData.length; i++) {
-        var item = adjectivesData[i];
-        items[i] = new Adjective(item[0], item[1], item[2]);
-    }
-})()
+
+const items = verbs
 
 var item = null
 
@@ -76,6 +64,7 @@ function clear() {
     div_question.innerText = ""
     div_answer.innerText = ""
     div_status.innerText = ""
+    div_answer_ex.innerText = ""
 }
 
 
@@ -145,25 +134,26 @@ function quiz() {
     if (lsCheckVocaKrToEn.checked()) {
         div_question.innerText = item.kor
     } else {
-        div_question.innerText = item.eng
+        div_question.innerText = item.base
     }
 }
 
 function answer() {
     if (checkbox_kr_to_en.checked) {
-        div_answer.innerText = item.eng
+        div_answer.innerText = item.base
     } else {
         div_answer.innerText = item.kor
     }
+    div_answer_ex.innerText = item.base + " - " + item.past + " - " + item.perfect
 }
 
 function loadStatus() {
-    currentIndex = eval(window.localStorage.getItem("currentIndex_adjective"))
+    currentIndex = eval(window.localStorage.getItem("currentIndex_irregular_verbs"))
     if (null == currentIndex) { currentIndex = 0; }
 }
 
 function saveStatus() {
-    window.localStorage.setItem("currentIndex_adjective", currentIndex);
+    window.localStorage.setItem("currentIndex_irregular_verbs", currentIndex);
 }
 
 function onclickCheckbox() {

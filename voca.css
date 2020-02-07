@@ -17,6 +17,14 @@
     font-weight:bold;
 }
 
+#div_answer_ex {
+    margin-top:4px;
+    margin-bottom:12px;
+    font-size:30px;
+    font-weight:bold;
+    color:blue;
+}
+
 #options {
     margin-bottom:20px;
 }
