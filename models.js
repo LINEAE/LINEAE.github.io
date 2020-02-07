@@ -346,18 +346,19 @@ class Tense {
 
 const tenses = [
     new Tense(TenseEnum.present, false, false),
-    new Tense(TenseEnum.present, true, false),
-    new Tense(TenseEnum.present, false, true),
-    new Tense(TenseEnum.present, true, true),
-
     new Tense(TenseEnum.past, false, false),
-    new Tense(TenseEnum.past, true, false),
-    new Tense(TenseEnum.past, false, true),
-    new Tense(TenseEnum.past, true, true),
-
     new Tense(TenseEnum.future, false, false),
+
+    new Tense(TenseEnum.present, true, false),
+    new Tense(TenseEnum.past, true, false),
     new Tense(TenseEnum.future, true, false),
+
+    new Tense(TenseEnum.present, false, true),
+    new Tense(TenseEnum.past, false, true),
     new Tense(TenseEnum.future, false, true),
+    
+    new Tense(TenseEnum.present, true, true),
+    new Tense(TenseEnum.past, true, true),
     new Tense(TenseEnum.future, true, true),
 ];
 

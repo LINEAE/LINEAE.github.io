@@ -28,24 +28,26 @@ var items = [];
 (function () {
     var index = 0;
     for (var i = 0; i < subjects.length; i++) {
-        var s = subjects[i];
+        var s = subjects[i];    //subject
         for(var j = 0; j < 2; j++) {
-            var u = j == 0;
-            for(var k = 0; k < tenses.length;k++) {
-                var t = tenses[k];
-                if(u && t.progressive) {
-                    continue;
-                }
-                for(var l = 0; l < 2; l++) {
-                    var p = l == 0;
+            var u = j == 0;     //act or exist
+            for(var l = 0; l < 2; l++) {
+                    var a = l == 1; // ask
                     for(var m = 0; m < 2; m++) {
-                        var a = m == 1;
-                        items[index] = new Sentence(s,u,t,p,a);
-                        index++;
+                        var p = m == 0; //positive
+                        for(var k = 0; k < tenses.length;k++) {
+                            var t = tenses[k];  //tense
+                            if(u && t.progressive) {
+                                continue;
+                            }
+                            items[index] = new Sentence(s,u,t,p,a);
+                            index++;
+                        }
+                        
                     }
                 }
 
-            }
+            
 
         }
        
