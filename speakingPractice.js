@@ -56,7 +56,7 @@ var items = [];
 
 var item = null
 
-var groupSize = 50
+var groupSize = 72
 
 
 function onLoadBody() {
