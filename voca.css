@@ -184,6 +184,21 @@ button.half_size {
     width: 100%;
     color:black
 }
+
+#power-question {
+    font-size: 25px;
+    margin-top:10px;
+    width: 100%;
+    color:black
+}
+
+#power-answer {
+    font-size: 25px;
+    margin-top:10px;
+    width: 100%;
+    color:red
+}
+
 .layer-0 {
     z-index: 0;
 }
