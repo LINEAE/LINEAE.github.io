@@ -19,7 +19,7 @@ const powers = [];
 var nextCount = 0
 var items = powers
 var item = null
-var groupSize = 20
+var groupSize = 100
 
 function onLoadBody() {
     lsCheckVocaKrToEn = new LSCheckbox(checkbox_kr_to_en, "voca_kr_to_en", true)
