@@ -893,18 +893,4 @@ const verbs = [];
     }
 })()
 
-class Article {
-    constructor(index, description) {
-        this.index = index;
-        this.description = description;
-    }
-}
-
-const articles = [];
-(function () {
-    for (var i = 0; i < imageArticlesData.length; i++) {
-        var item = imageArticlesData[i];
-        articles[i] = new Article(i + 1, item[0]);
-    }
-})()
 
