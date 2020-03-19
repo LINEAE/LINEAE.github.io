@@ -16,7 +16,7 @@ const items = [];
 
 var item = null
 
-var groupSize = 50
+var groupSize = items.length
 
 function onLoadBody() {
     lsCheckVocaKrToEn = new LSCheckbox(checkbox_kr_to_en, "voca_kr_to_en", true)

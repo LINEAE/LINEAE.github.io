@@ -31,7 +31,7 @@ class ArticleWithTense{
 
 var items = articles
 var item = null
-var groupSize = 50
+var groupSize = items.length
 
 function onLoadBody() {
     drawBackground();
