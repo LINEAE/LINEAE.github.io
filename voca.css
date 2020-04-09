@@ -215,3 +215,31 @@ button.half_size {
 canvas {
     position: absolute;
 }
+
+#searchcontainer {
+  height: 60px;
+}
+
+#search_text {
+    display: block;
+    width: 76%;
+    height:34px;
+    float: left;
+    font-size: 22px;
+}
+
+#search_button {
+    float: left;
+    display: block;
+    width: 20%;
+    height: 40px;
+    font-size: 22px;
+}
+
+#searchNoResult {
+  text-align:center;
+  color:red;
+  font-size:22px;
+  margin-bottom:10px;
+  visibility:hidden;
+}

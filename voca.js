@@ -82,9 +82,51 @@ function onLoadBody() {
     slider_to.oninput()
 }
 
+function search() {
+    var searchText = search_text.value
+    var result = -1
+    for(var i = 0; i < vocas.length;i++) {
+
+        if(vocas[i].eng == searchText) {
+            result = i
+            break;
+        }
+    }
+    if(result >= 0) {
+        displaySearchQuiz(result)
+        visibleSearchNoResult(false)
+    }else{
+        visibleSearchNoResult(true)
+    }
+    
+
+}
+
+function visibleSearchNoResult(visible) {
+    if(!visible) {
+        searchNoResult.style.visibility = "hidden";
+    } else {
+        searchNoResult.style.visibility = "visible";
+    }
+}
+
+function displaySearchQuiz(index) {
+    clear()
+    nextCount = 1
+    voca = vocas[index]
+    div_status.innerText = "Search: " + (index + 1)
+    
+
+    if (lsCheckVocaKrToEn.checked()) {
+        div_question.innerText = voca.kor
+    } else {
+        div_question.innerHTML = voca.engHtml(lsCheckVocaPlaySound.checked())
+    }
+}
 
 var nextCount = 0
 function next() {
+    visibleSearchNoResult(false)
     if (nextCount++ % 2 == 0) { quiz() } else { answer() }
 }
 function audioPlay() {
