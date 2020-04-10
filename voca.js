@@ -83,7 +83,7 @@ function onLoadBody() {
 }
 
 function search() {
-    var searchText = search_text.value
+    var searchText = search_text.value.toLowerCase()
     var result = -1
     for(var i = 0; i < vocas.length;i++) {
 
